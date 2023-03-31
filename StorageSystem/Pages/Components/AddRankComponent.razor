@@ -1,0 +1,73 @@
+﻿@*@page "/add-rank"
+@attribute [Authorize(Policy = "AdminOnly")]
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Forms
+
+<h2>Add Rank</h2>
+
+<EditForm Model="@model" OnValidSubmit="AddRank">
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <InputText id="email" @bind-Value="@model.Email" />
+    </div>
+    <div class="form-group">
+        <label>Rank:</label>
+        <div class="form-check">
+            <InputCheckbox @bind-Value="@model.IsUser" class="form-check-input" />
+            <label class="form-check-label">User</label>
+        </div>
+        <div class="form-check">
+            <InputCheckbox @bind-Value="@model.IsWorker" class="form-check-input" />
+            <label class="form-check-label">Worker</label>
+        </div>
+        <div class="form-check">
+            <InputCheckbox @bind-Value="@model.IsAdmin" class="form-check-input" />
+            <label class="form-check-label">Admin</label>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Rank</button>
+</EditForm>
+
+@code {
+    private class AddRankModel
+    {
+        public string Email { get; set; }
+        public bool IsUser { get; set; }
+        public bool IsWorker { get; set; }
+        public bool IsAdmin { get; set; }
+    }
+
+    private AddRankModel model = new AddRankModel();
+
+    [Inject]
+    private UserManager<IdentityUser> userManager { get; set; }
+
+    private async Task AddRank()
+    {
+        var user = await userManager.FindByEmailAsync(model.Email);
+
+        if (user != null)
+        {
+            var roles = new List<string>();
+
+            if (model.IsUser)
+            {
+                roles.Add("User");
+            }
+
+            if (model.IsWorker)
+            {
+                roles.Add("Worker");
+            }
+
+            if (model.IsAdmin)
+            {
+                roles.Add("Admin");
+            }
+
+            await userManager.RemoveFromRolesAsync(user, await userManager.GetRolesAsync(user));
+            await userManager.AddToRolesAsync(user, roles);
+        }
+    }
+}
+*@

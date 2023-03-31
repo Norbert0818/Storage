@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CoreBuisness
+{
+    public class Orders
+    {
+        public int OrderNumber { get; set; }
+        public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerEmail { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime UpdatedDate { get; set; }
+        public string WorkerName { get; set; }
+        public string WorkerPhoneNumber { get; set; }
+        public double Qty { get; set; }
+        public double UnitPrice { get; set; }
+        public double TotalPrice { get { return Qty * UnitPrice; } }
+        public string Adress { get; set; }
+
+        public double TotalDiscount;
+    }
+}
