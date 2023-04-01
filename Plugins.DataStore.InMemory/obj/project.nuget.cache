@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wtBMbIJo1lPbnz3rPAGDIw4AwQvfE2G3Lh/tawxtOgONaxhiC+AXmT1saG4lw052T6AJjeiZfdx7ADWMQ0zAqQ==",
+  "dgSpecHash": "g0bA7JvSCDrrV3tIjuwO2ChRDhgDxvXdbTU5LXsuAp/gAT2HhgLAc7Ziat6FJeREMwvkr15pezOvVj+kRnTQPA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\Plugins.DataStore.InMemory\\Plugins.DataStore.InMemory.csproj",
+  "projectFilePath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\Plugins.DataStore.InMemory\\Plugins.DataStore.InMemory.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

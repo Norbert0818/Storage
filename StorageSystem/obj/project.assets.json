@@ -10786,11 +10786,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\StorageSystem\\StorageSystem.csproj",
+      "projectUniqueName": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\StorageSystem\\StorageSystem.csproj",
       "projectName": "StorageSystem",
-      "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\StorageSystem\\StorageSystem.csproj",
+      "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\StorageSystem\\StorageSystem.csproj",
       "packagesPath": "C:\\Users\\Norbi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\StorageSystem\\obj\\",
+      "outputPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\StorageSystem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Norbi\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -10807,17 +10807,17 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\CoreBuisness\\CoreBuisness.csproj": {
-              "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\CoreBuisness\\CoreBuisness.csproj"
+            "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\CoreBuisness\\CoreBuisness.csproj": {
+              "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\CoreBuisness\\CoreBuisness.csproj"
             },
-            "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\Plugins.DataStore.InMemory\\Plugins.DataStore.InMemory.csproj": {
-              "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\Plugins.DataStore.InMemory\\Plugins.DataStore.InMemory.csproj"
+            "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\Plugins.DataStore.InMemory\\Plugins.DataStore.InMemory.csproj": {
+              "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\Plugins.DataStore.InMemory\\Plugins.DataStore.InMemory.csproj"
             },
-            "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\Plugins.DataStore.MySQL\\Plugins.DataStore.MySQL.csproj": {
-              "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\Plugins.DataStore.MySQL\\Plugins.DataStore.MySQL.csproj"
+            "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\Plugins.DataStore.MySQL\\Plugins.DataStore.MySQL.csproj": {
+              "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\Plugins.DataStore.MySQL\\Plugins.DataStore.MySQL.csproj"
             },
-            "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\UsesCases\\UseCases.csproj": {
-              "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\UsesCases\\UseCases.csproj"
+            "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\UsesCases\\UseCases.csproj": {
+              "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\UsesCases\\UseCases.csproj"
             }
           }
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YOyb2+d436pf6DR0I8BaeneTKih3uKyr5w3tMD8l9tJeqx5EU/5RB55E9IHuyhqnusePSRhSmsikxC4zcrtKtQ==",
+  "dgSpecHash": "85/1bIOBruaqlUz0dwl9VMhYws360XRn92+9x+XqflX9zGh3IGE1Ikuj4DZDa8X1xtXVmzl1ye2utAdK6e5smA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\Plugins.DataStore.MySQL\\Plugins.DataStore.MySQL.csproj",
+  "projectFilePath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\Plugins.DataStore.MySQL\\Plugins.DataStore.MySQL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Norbi\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Norbi\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.4\\microsoft.entityframeworkcore.7.0.4.nupkg.sha512",

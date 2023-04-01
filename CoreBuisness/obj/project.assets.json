@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\CoreBuisness\\CoreBuisness.csproj",
+      "projectUniqueName": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\CoreBuisness\\CoreBuisness.csproj",
       "projectName": "CoreBuisness",
-      "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\CoreBuisness\\CoreBuisness.csproj",
+      "projectPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\CoreBuisness\\CoreBuisness.csproj",
       "packagesPath": "C:\\Users\\Norbi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\CoreBuisness\\obj\\",
+      "outputPath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\CoreBuisness\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Norbi\\AppData\\Roaming\\NuGet\\NuGet.Config",

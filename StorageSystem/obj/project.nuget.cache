@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XDD42dl3graN7BiYX39CFei9BxgzrwTfNqTgq8Yt1kU5ItjvKuKM2cZcB3NHh88a+Bidg0turWgRH3xgata1Ig==",
+  "dgSpecHash": "/+QPDZgocTLDDfKs5CKEko6OqthKx2NO8ZqE37KduDX/ekAbWndLzRb1CZrlf+0bCi7CIIcJDCHqLZCu9tALlw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\StorageSystem\\StorageSystem\\StorageSystem.csproj",
+  "projectFilePath": "C:\\Users\\Norbi\\Desktop\\Management 2.0 with identity\\Storage\\StorageSystem\\StorageSystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Norbi\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Norbi\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
