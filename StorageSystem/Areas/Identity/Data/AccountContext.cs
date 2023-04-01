@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CoreBuisness.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,9 @@ public class AccountContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
     }
+    public DbSet<Address> Addresses { get; set; }
+    public DbSet<Worker> Workers { get; set; }
+    public DbSet<Customer> Customers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

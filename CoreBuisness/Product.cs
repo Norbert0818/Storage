@@ -18,6 +18,8 @@ namespace CoreBuisness
         public int? Quantity { get; set; }
         [Required]
         public double? Price { get; set; }
+        public string ImageLink { get; set; }
+        public string Description { get; set; }
 
         // navigation property for ef core
         public Category Category { get; set; }
