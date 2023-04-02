@@ -26,13 +26,14 @@ builder.Services.AddDbContext<AccountContext>(options =>
 
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AccountContext>();
 
-builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy("AdminOnly", p => p.RequireClaim("Position", "Admin"));
-        options.AddPolicy("WorkerOnly", p => p.RequireClaim("Position", "Admin", "Worker"));
-    });
+//builder.Services.AddAuthorization(options =>
+//    {
+//        options.AddPolicy("AdminOnly", p => p.RequireClaim("Position", "Admin"));
+//        options.AddPolicy("WorkerOnly", p => p.RequireClaim("Position", "Admin", "Worker"));
+//    });
 
 
 
@@ -50,6 +51,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 //In Memory
 builder.Services.AddScoped<ICategoryRepository, CategoryInMemoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductInMemoryRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //Database
 //builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -67,9 +69,9 @@ builder.Services.AddTransient<IAddProductUseCase, AddProductUseCase>();
 builder.Services.AddTransient<IEditProductUseCase, EditProductUseCase>();
 builder.Services.AddTransient<IGetProductByIdUseCase, GetProductByIdUseCase>();
 builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
-//builder.Services.AddTransient<>();
+builder.Services.AddTransient<IViewUsersUseCase, ViewUsersUseCase>();
 
-var app = builder.Build();
+var app = builder.Build(); 
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
