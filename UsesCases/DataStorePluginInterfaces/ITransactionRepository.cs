@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UseCases.DataStorePluginInterfaces
 {
-    internal interface ITransactionRepository
+    public interface ITransactionRepository
     {
     }
 }

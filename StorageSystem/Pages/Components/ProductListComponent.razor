@@ -1,7 +1,36 @@
 ﻿@page "/products"
 
+@inject IViewProductsUseCase ViewProductsUseCase
+
 <h3>Products</h3>
 
-@code {
+@if (products != null)
+{
+    <div class="container d-flex flex-wrap">
+        @foreach (var product in products)
+        {
+            <div class="card" style="width: 18rem;">
+                <img src="@product.ImageLink" class="card-img-top" alt="product image">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">@product.Description</p>
+                    <div class="d-flex align-baseline">
+                        <p class="card-text w-50 font-weight-bold">@product.Price $</p>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
 
+@code {
+    private IEnumerable<Product> products;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        products = ViewProductsUseCase.Execute();
+    }
 }

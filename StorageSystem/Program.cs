@@ -23,6 +23,8 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<AccountContext>(options =>
   options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
+builder.Services.AddDbContext<DataContext>(options =>
+  options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
 
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -49,13 +51,11 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 //In Memory
-builder.Services.AddScoped<ICategoryRepository, CategoryInMemoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductInMemoryRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //Database
-//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-//builder.Services.AddScoped<IProductRepository, ProductRepository>();
 //builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 //builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 

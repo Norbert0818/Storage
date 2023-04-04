@@ -54,6 +54,8 @@ namespace Plugins.DataStore.MySQL
             prod.Name = product.Name;
             prod.Price = product.Price;
             prod.Quantity = product.Quantity;
+            prod.ImageLink = product.ImageLink;
+            prod.Description = product.Description;
 
             db.SaveChanges();
         }

@@ -9,6 +9,7 @@ namespace CoreBuisness
 {
     public class Product
     {
+        [Key]
         public int ProductId { get; set; }
         [Required]
         public int? CategoryId { get; set; }
@@ -18,8 +19,8 @@ namespace CoreBuisness
         public int? Quantity { get; set; }
         [Required]
         public double? Price { get; set; }
-        public string ImageLink { get; set; }
-        public string Description { get; set; }
+        public string? ImageLink { get; set; }
+        public string? Description { get; set; }
 
         // navigation property for ef core
         public Category Category { get; set; }

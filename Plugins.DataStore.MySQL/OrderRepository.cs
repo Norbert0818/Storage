@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Plugins.DataStore.MySQL
 {
-    internal class OrderRepository
+    public class OrderRepository
     {
     }
 }
