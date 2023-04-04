@@ -6,7 +6,7 @@
 @inject UserManager<IdentityUser> UserManager
 
 <h3>Users</h3>
-@if (users != null)
+@if (_users != null)
 {
     <table class="table">
         <thead>
@@ -17,32 +17,36 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in users)
+            @foreach (var user in _users)
             {
                 <tr>
-                    <td>@user.Email</td>
-                    <td>@user.PhoneNumber</td>
-                    <td>@getRole(user)</td>
+            <td>@user.Email</td>
+            <td>@user.PhoneNumber</td>
+            @if(userRoleDict.TryGetValue(user, out var role))
+                {
+                <td>@role</td>
+                }
+                else
+                {
+                <td></td>
+                }
                 </tr>
             }
-        </tbody>
-    </table>
-}
+            </tbody>
+            </table>
+            }
 
-@code {
-    private IEnumerable<IdentityUser> users;
-    private IEnumerable<(int, string)> userRoles;
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-
-        users = ViewUsersUseCase.Execute();
+@code{
+        private IEnumerable<IdentityUser>? _users;
+        private IEnumerable<(int, string)> userRoles;
+    private Dictionary<IdentityUser, string> userRoleDict = new Dictionary<IdentityUser, string>();
+        protected override async Task OnInitializedAsync()
+        {
+            _users = ViewUsersUseCase.Execute();
+            foreach(var user in _users)
+            {
+                var roles = await UserManager.GetRolesAsync(user);
+                userRoleDict.Add(user, roles.FirstOrDefault());
+            }
+        }
     }
-
-    private string getRole(IdentityUser user)
-    {
-        Task<IList<string>> roles = UserManager.GetRolesAsync(user);
-        return roles.Result.FirstOrDefault();
-    }
-}
