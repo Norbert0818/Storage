@@ -10,6 +10,7 @@
 
     <main>
         <div class="top-row px-4">
+             <Cart CartItemCount="@cartItemCount" />
             <LoginDisplay></LoginDisplay>
         </div>
 
@@ -18,3 +19,7 @@
         </article>
     </main>
 </div>
+
+@code {
+    int cartItemCount = 0;
+}

@@ -38,7 +38,7 @@
 
 @code{
         private IEnumerable<IdentityUser>? _users;
-        private IEnumerable<(int, string)> userRoles;
+        
     private Dictionary<IdentityUser, string> userRoleDict = new Dictionary<IdentityUser, string>();
         protected override async Task OnInitializedAsync()
         {
