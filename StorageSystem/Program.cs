@@ -58,6 +58,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 //Database
 //builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 //builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
 builder.Services.AddTransient<IAddCategoryUseCase, AddCategoryUseCase>();
