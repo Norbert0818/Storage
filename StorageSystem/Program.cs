@@ -10,7 +10,7 @@ using UseCases.UseCaseInterfaces;
 using Microsoft.AspNetCore.Identity;
 using StorageSystem.Data;
 using Plugins.DataStore.InMemory;
-
+using UseCases.CartUseCase;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AccountsConnection") ?? throw new InvalidOperationException("Connection string 'DatabaseContextConnection' not found.");
@@ -71,8 +71,9 @@ builder.Services.AddTransient<IEditProductUseCase, EditProductUseCase>();
 builder.Services.AddTransient<IGetProductByIdUseCase, GetProductByIdUseCase>();
 builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
 builder.Services.AddTransient<IViewUsersUseCase, ViewUsersUseCase>();
+builder.Services.AddTransient<IAddProductToCartUseCase, AddProductToCartUseCase>();
 
-var app = builder.Build(); 
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

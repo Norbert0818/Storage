@@ -1,6 +1,9 @@
 ﻿@page "/products"
 
 @inject IViewProductsUseCase ViewProductsUseCase
+@inject IAddProductToCartUseCase AddProductToCartUseCase
+@inject AuthenticationStateProvider AuthStateProvider
+@using Microsoft.AspNetCore.Identity
 
 <h3>Products</h3>
 
@@ -16,7 +19,7 @@
                     <p class="card-text">@product.Description</p>
                     <div class="d-flex align-baseline">
                         <p class="card-text w-50 font-weight-bold">@product.Price $</p>
-                        <a href="#" class="btn btn-primary">Add to cart</a>
+                        <button type="button" @onclick="EventCallback.Factory.Create(this, () => OnClickAddProduct(product))" class="btn btn-primary">Add to cart</button>
                     </div>
                 </div>
             </div>
@@ -26,11 +29,33 @@
 
 @code {
     private IEnumerable<Product> products;
+    private ShoppingCart cart;
 
-    protected override void OnInitialized()
+    //protected override void OnInitialized()
+    //{
+    //    base.OnInitialized();
+
+    //    products = ViewProductsUseCase.Execute();
+    //}
+
+    private bool isLoggedIn;
+
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        IdentityUser user;
+        isLoggedIn = authState.User.Identity.IsAuthenticated;
+        if (isLoggedIn )
+        {
+            
+        }
 
         products = ViewProductsUseCase.Execute();
     }
+    private async Task OnClickAddProduct(Product product)
+    {
+        await Task.Run(() => AddProductToCartUseCase.Execute(cart, product));
+    }
+
+
 }

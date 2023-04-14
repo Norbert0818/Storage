@@ -6,7 +6,7 @@ namespace CoreBuisness
     {
         [Key]
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public List<ShoppingCartProduct> CartProducts { get; set; }
 
         public bool IsEmpty()

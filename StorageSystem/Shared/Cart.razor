@@ -1,0 +1,20 @@
+﻿<style>
+    .nav-link .fa-shopping-cart {
+        color: blue;
+    }
+
+    .nav-link .badge {
+        background-color: blue;
+    }
+</style>
+
+<a class="nav-link" href="cart">
+    <span class="oi oi-cart"></span>
+    
+    <span class="badge badge-pill badge-danger">@CartItemCount</span>
+</a>
+
+@code {
+    [Parameter]
+    public int CartItemCount { get; set; }
+}

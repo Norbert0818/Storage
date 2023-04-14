@@ -4,7 +4,6 @@
 <AuthorizeView>
     <Authorized>
         <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
-        <a class="mx-3" role="button"><span class="oi oi-cart"></span></a>
         <form class="py-2 d-none d-md-inline-block" action="/Identity/Account/Logout?returnUrl=%2F" method="post">
             <button type="submit" class="nav-link btn btn-link">Log out</button>
         </form>

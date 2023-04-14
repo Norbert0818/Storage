@@ -22,6 +22,7 @@ namespace Plugins.DataStore.MySQL
         public DbSet<Orders> Orders { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
