@@ -18,7 +18,16 @@ public class ShoppingCartRepository : IShoppingCartRepository
         {
             throw new ArgumentException("Cart must not be null.");
         }
-        ShoppingCartProduct shoppingCartProduct = cart.CartProducts.Find(cp => cp.ProductId.Equals(product.ProductId));
+
+        ShoppingCartProduct shoppingCartProduct = null;
+        try
+        {
+            shoppingCartProduct = cart.CartProducts.Find(cp => cp.ProductId.Equals(product.ProductId));
+        }
+        catch (Exception e)
+        {
+            
+        }
         if (shoppingCartProduct != null)
         {
             shoppingCartProduct.Quantity += 1;
@@ -29,8 +38,10 @@ public class ShoppingCartRepository : IShoppingCartRepository
             shoppingCartProduct.ProductId = product.ProductId;
             shoppingCartProduct.Quantity = 1;
         }
-
+        
+        cart.CartProducts.Add(shoppingCartProduct);
         db.ShoppingCartProducts.Add(shoppingCartProduct);
+        db.ShoppingCarts.Update(cart);
         db.SaveChanges();
     }
 
@@ -45,5 +56,10 @@ public class ShoppingCartRepository : IShoppingCartRepository
         }
 
         return db.ShoppingCarts.Where(sc => sc.UserId == userId).FirstOrDefault();
+    }
+
+    public List<ShoppingCartProduct> GetShoppingCartProducts()
+    {
+        return db.ShoppingCartProducts.ToList();
     }
 }

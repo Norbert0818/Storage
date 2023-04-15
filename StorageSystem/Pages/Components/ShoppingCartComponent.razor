@@ -1,15 +1,47 @@
 @page "/cart"
 
+@inject IViewProductsUseCase ViewProductsUseCase
+@inject IAddProductToCartUseCase AddProductToCartUseCase
+@inject IGetCartUseCase GetCartUseCase
+@inject IGetCartProductsUseCase GetCartProductsUseCase
+@inject UserManager<IdentityUser> UserManager
+@inject AuthenticationStateProvider AuthStateProvider
+@using Microsoft.AspNetCore.Identity
+
 <h3>ShoppingCart</h3>
-@*@if (!false)
+@if (products != null)
 {
-    <div>my products</div>
+    @foreach (var product in products)
+    {
+        <div>@product.ProductId</div>
+        <div>@product.Quantity</div>
+    }
 }
 else
 {
     <div>Your cart is empty!</div>
-}*@
+}
 
 @code {
+    private ShoppingCart cart;
+    private List<ShoppingCartProduct> products;
     
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var isLoggedIn = user.Identity.IsAuthenticated;
+        ShoppingCart cart;
+
+        if (isLoggedIn)
+        {
+            cart = GetCartUseCase.Execute(UserManager.GetUserId(user));
+            var cartProducts = GetCartProductsUseCase.Execute();
+            products = cartProducts.Where(cp => cp.ShoppingCartId == cart.Id).ToList();
+        }
+        else
+        {
+            products = null;
+        }
+    }
 }

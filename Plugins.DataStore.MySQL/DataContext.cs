@@ -31,6 +31,10 @@ namespace Plugins.DataStore.MySQL
                 .HasMany(c => c.Products)
                 .WithOne(p => p.Category)
                 .HasForeignKey(p => p.CategoryId);
+            modelBuilder.Entity<ShoppingCart>()
+                .HasMany(c => c.CartProducts)
+                .WithOne(cp => cp.ShoppingCart)
+                .HasForeignKey(cp => cp.ShoppingCartId);
         }
     }
 }

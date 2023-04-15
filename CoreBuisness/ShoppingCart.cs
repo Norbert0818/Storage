@@ -6,9 +6,13 @@ namespace CoreBuisness
     {
         [Key]
         public int Id { get; set; }
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         public List<ShoppingCartProduct> CartProducts { get; set; }
 
+        public ShoppingCart()
+        {
+            CartProducts = new List<ShoppingCartProduct>();
+        }
         public bool IsEmpty()
         {
             return !this.CartProducts.Any();
@@ -19,6 +23,8 @@ namespace CoreBuisness
     {
         [Key]
         public int Id { get; set; }
+        public virtual ShoppingCart ShoppingCart { get; set; }
+        public int ShoppingCartId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
     }

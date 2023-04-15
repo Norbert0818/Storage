@@ -7,6 +7,7 @@ namespace UseCases.DataStorePluginInterfaces
     {
         ShoppingCart GetShoppingCartForUser(string userId);
         void AddProductToCart(ShoppingCart cart, Product product);
+        List<ShoppingCartProduct> GetShoppingCartProducts();
         // ShoppingCart GetCart(IdentityUser user);
     }
 }
