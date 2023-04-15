@@ -54,7 +54,8 @@ namespace Plugins.DataStore.MySQL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -63,7 +64,7 @@ namespace Plugins.DataStore.MySQL.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ShoppingCartProduct",
+                name: "ShoppingCartProducts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -74,9 +75,9 @@ namespace Plugins.DataStore.MySQL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingCartProduct", x => x.Id);
+                    table.PrimaryKey("PK_ShoppingCartProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShoppingCartProduct_ShoppingCarts_ShoppingCartId",
+                        name: "FK_ShoppingCartProducts_ShoppingCarts_ShoppingCartId",
                         column: x => x.ShoppingCartId,
                         principalTable: "ShoppingCarts",
                         principalColumn: "Id");
@@ -84,8 +85,8 @@ namespace Plugins.DataStore.MySQL.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShoppingCartProduct_ShoppingCartId",
-                table: "ShoppingCartProduct",
+                name: "IX_ShoppingCartProducts_ShoppingCartId",
+                table: "ShoppingCartProducts",
                 column: "ShoppingCartId");
         }
 
@@ -93,7 +94,7 @@ namespace Plugins.DataStore.MySQL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ShoppingCartProduct");
+                name: "ShoppingCartProducts");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");

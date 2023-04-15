@@ -11,8 +11,8 @@ using Plugins.DataStore.MySQL;
 namespace Plugins.DataStore.MySQL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230414194713_shoppingcartproduct")]
-    partial class shoppingcartproduct
+    [Migration("20230415155041_shoppingcart")]
+    partial class shoppingcart
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,8 +128,9 @@ namespace Plugins.DataStore.MySQL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
