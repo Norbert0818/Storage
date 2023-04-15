@@ -19,9 +19,9 @@ namespace UseCases.CartUseCase
             this.shoppingCartRepository = shoppingCartRepository;
         }
 
-        public ShoppingCart Execute(IdentityUser user)
+        public ShoppingCart Execute(string userId)
         {
-            return shoppingCartRepository.GetCart(user);
+            return shoppingCartRepository.GetShoppingCartForUser(userId);
         }
     }
 }

@@ -14,6 +14,10 @@ public class ShoppingCartRepository : IShoppingCartRepository
 
     public void AddProductToCart(ShoppingCart cart, Product product)
     {
+        if (cart == null)
+        {
+            throw new ArgumentException("Cart must not be null.");
+        }
         ShoppingCartProduct shoppingCartProduct = cart.CartProducts.Find(cp => cp.ProductId.Equals(product.ProductId));
         if (shoppingCartProduct != null)
         {
@@ -32,7 +36,6 @@ public class ShoppingCartRepository : IShoppingCartRepository
 
     public ShoppingCart GetShoppingCartForUser(string userId)
     {
-        // return new ShoppingCart();
         if (userId == null)
         {
             ShoppingCart shoppingCart = new ShoppingCart();
@@ -43,5 +46,4 @@ public class ShoppingCartRepository : IShoppingCartRepository
 
         return db.ShoppingCarts.Where(sc => sc.UserId == userId).FirstOrDefault();
     }
-
 }

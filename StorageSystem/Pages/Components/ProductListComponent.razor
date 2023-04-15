@@ -2,6 +2,8 @@
 
 @inject IViewProductsUseCase ViewProductsUseCase
 @inject IAddProductToCartUseCase AddProductToCartUseCase
+@inject IGetCartUseCase GetCartUseCase
+@inject UserManager<IdentityUser> UserManager
 @inject AuthenticationStateProvider AuthStateProvider
 @using Microsoft.AspNetCore.Identity
 
@@ -31,23 +33,23 @@
     private IEnumerable<Product> products;
     private ShoppingCart cart;
 
-    //protected override void OnInitialized()
-    //{
-    //    base.OnInitialized();
-
-    //    products = ViewProductsUseCase.Execute();
-    //}
+    // private UserManager<IdentityUser> _userManager;
 
     private bool isLoggedIn;
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        IdentityUser user;
-        isLoggedIn = authState.User.Identity.IsAuthenticated;
+        var user = authState.User;
+        isLoggedIn = user.Identity.IsAuthenticated;
+        
         if (isLoggedIn )
         {
-            
+            cart = GetCartUseCase.Execute(UserManager.GetUserId(user));
+        }
+        else
+        {
+            cart = GetCartUseCase.Execute(null);
         }
 
         products = ViewProductsUseCase.Execute();
