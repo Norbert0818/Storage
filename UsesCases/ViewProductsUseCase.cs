@@ -1,6 +1,7 @@
 ﻿using CoreBuisness;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,17 @@ namespace UseCases
         public IEnumerable<Product> Execute()
         {
             return productRepository.GetProducts();
+        }
+
+        public List<KeyValuePair<Product, int>> ConvertCartProductsToProducts(List<ShoppingCartProduct> cartProducts)
+        {
+            List<KeyValuePair<Product, int>> products = new List<KeyValuePair<Product, int>>();
+            foreach (var cartProduct in cartProducts)
+            {
+                products.Add(new KeyValuePair<Product, int>(productRepository.GetProductById(cartProduct.ProductId), cartProduct.Quantity));
+            }
+
+            return products;
         }
     }
 }
