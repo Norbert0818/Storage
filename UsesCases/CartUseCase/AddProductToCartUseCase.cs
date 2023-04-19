@@ -22,5 +22,14 @@ namespace UseCases.CartUseCase
         {
             shoppingCartRepository.AddProductToCart(cart, product);
         }
+        public void RemoveProductFromCart(ShoppingCart cart, Product product)
+        {
+            shoppingCartRepository.RemoveProductFromCart(cart, product);
+        }
+
+        public void UpdateProductQuantity(ShoppingCart cart, Product product, int newQuantity)
+        {
+            shoppingCartRepository.UpdateProductQuantity(cart, product, newQuantity);
+        }
     }
 }

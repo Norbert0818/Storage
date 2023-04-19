@@ -26,7 +26,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
         }
         catch (Exception e)
         {
-            
+
         }
         if (shoppingCartProduct != null)
         {
@@ -38,7 +38,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
             shoppingCartProduct.ProductId = product.ProductId;
             shoppingCartProduct.Quantity = 1;
         }
-        
+
         cart.CartProducts.Add(shoppingCartProduct);
         db.ShoppingCartProducts.Add(shoppingCartProduct);
         db.ShoppingCarts.Update(cart);
@@ -62,4 +62,39 @@ public class ShoppingCartRepository : IShoppingCartRepository
     {
         return db.ShoppingCartProducts.ToList();
     }
+
+    public void RemoveProductFromCart(ShoppingCart cart, Product product)
+    {
+        if (cart == null)
+        {
+            throw new ArgumentException("Cart must not be null.");
+        }
+
+        var shoppingCartProduct = cart.CartProducts.Find(cp => cp.ProductId.Equals(product.ProductId));
+        if (shoppingCartProduct != null)
+        {
+            cart.CartProducts.Remove(shoppingCartProduct);
+            db.ShoppingCartProducts.Remove(shoppingCartProduct);
+            db.ShoppingCarts.Update(cart);
+            db.SaveChanges();
+        }
+    }
+
+    public void UpdateProductQuantity(ShoppingCart cart, Product product, int newQuantity)
+    {
+        if (cart == null)
+        {
+            throw new ArgumentException("Cart must not be null.");
+        }
+
+        var shoppingCartProduct = cart.CartProducts.Find(cp => cp.ProductId.Equals(product.ProductId));
+        if (shoppingCartProduct != null)
+        {
+            shoppingCartProduct.Quantity = newQuantity;
+            db.ShoppingCartProducts.Update(shoppingCartProduct);
+            db.ShoppingCarts.Update(cart);
+            db.SaveChanges();
+        }
+    }
+
 }

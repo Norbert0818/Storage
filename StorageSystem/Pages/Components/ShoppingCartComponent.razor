@@ -8,15 +8,66 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @using Microsoft.AspNetCore.Identity
 
-<h3>ShoppingCart</h3>
 @if (products != null)
 {
-    @foreach (var product in products)
-    {
-        <div>@product.Key.Name</div>
-        <img href="@product.Key.ImageLink" />
-        <div>@product.Value</div>
-    }
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Order Summary</h3>
+        </div>
+        <div class="panel-body">
+            <div id="update-message">
+            </div>
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>
+                            Item Name
+                        </th>
+                        <th>
+                            Image
+                        </th>
+                        <th>
+                            Price (each)
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var product in products)
+                {
+                    <tr>
+                        <td>
+                            @product.Key.Name
+                        </td>
+                        <td>
+                            <img src="@product.Key.ImageLink" alt="" style="width:76px;height:76px;">
+                        </td>
+                        <td>
+                            @product.Key.Price $
+                        </td>
+                        <td>
+                            <input type="number" @bind="@product.Key.Quantity" @oninput="() => UpdateQuantity(product.Key, product.Value)" min="1" />
+                        </td>
+                        <td>
+                            <a @onclick="() => RemoveProductFromCart(product.Key)" style="cursor:pointer">Remove From Cart</a>
+                        </td>
+                    </tr>
+                    total = total + product.Key.Price * product.Value;
+                    
+                }
+                <tr class="info">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td id="cart-total">
+                        Total :  @total $
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 }
 else
 {
@@ -24,15 +75,20 @@ else
 }
 
 @code {
+    private double? total = 0;
     private ShoppingCart cart;
     private List<KeyValuePair<Product, int>> products;
-    
+
     protected override async Task OnInitializedAsync()
+    {
+        await LoadCartData();
+    }
+
+    private async Task LoadCartData()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         var isLoggedIn = user.Identity.IsAuthenticated;
-        ShoppingCart cart;
 
         if (isLoggedIn)
         {
@@ -46,4 +102,18 @@ else
             products = null;
         }
     }
+
+    private async Task RemoveProductFromCart(Product product)
+    {
+        AddProductToCartUseCase.RemoveProductFromCart(cart, product);
+        await LoadCartData();
+    }
+
+    private async Task UpdateQuantity(Product product, int newQuantity)
+    {
+        AddProductToCartUseCase.UpdateProductQuantity(cart, product, newQuantity);
+        await LoadCartData();
+        StateHasChanged();
+    }
 }
+
