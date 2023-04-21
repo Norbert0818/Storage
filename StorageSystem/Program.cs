@@ -50,14 +50,11 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 0;
 });
 
-//In Memory
+
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-//Database
-//builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-//builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
@@ -74,6 +71,7 @@ builder.Services.AddTransient<IViewUsersUseCase, ViewUsersUseCase>();
 builder.Services.AddTransient<IAddProductToCartUseCase, AddProductToCartUseCase>();
 builder.Services.AddTransient<IGetCartUseCase, GetCartUseCase>();
 builder.Services.AddTransient<IGetCartProductsUseCase, GetCartProductsUseCase>();
+builder.Services.AddTransient<ICreateOrderUseCase, ICreateOrderUseCase>();
 
 var app = builder.Build();
 

@@ -9,7 +9,6 @@ namespace UseCases.DataStorePluginInterfaces
         void AddProductToCart(ShoppingCart cart, Product product);
         List<ShoppingCartProduct> GetShoppingCartProducts();
         void RemoveProductFromCart(ShoppingCart cart, Product product);
-        void UpdateProductQuantity(ShoppingCart cart, Product product, int newQuantity);
-
+        Task UpdateProductQuantity(ShoppingCart cart, ShoppingCartProduct cartProduct);
     }
 }

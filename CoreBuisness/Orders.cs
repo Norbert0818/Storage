@@ -18,11 +18,16 @@ namespace CoreBuisness
         public DateTime UpdatedDate { get; set; }
         public string WorkerName { get; set; }
         public string WorkerPhoneNumber { get; set; }
+        public string CustomerPhoneNumber { get; set; }
         public double Qty { get; set; }
         public double UnitPrice { get; set; }
         public double TotalPrice { get { return Qty * UnitPrice; } }
         public string Adress { get; set; }
-
+        public DateTime DeliveryDay { get; set; }
+        public DateTime PickupDay { get; set; }
+        public int TaxNumber { get; set; }
+        public int DaysOfRenting { get; set; }
         public double TotalDiscount;
+        public object CartProducts;
     }
 }

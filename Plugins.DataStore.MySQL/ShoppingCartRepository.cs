@@ -80,21 +80,15 @@ public class ShoppingCartRepository : IShoppingCartRepository
         }
     }
 
-    public void UpdateProductQuantity(ShoppingCart cart, Product product, int newQuantity)
+    public async Task UpdateProductQuantity(ShoppingCart cart, ShoppingCartProduct cartProduct)
     {
-        if (cart == null)
-        {
-            throw new ArgumentException("Cart must not be null.");
-        }
-
-        var shoppingCartProduct = cart.CartProducts.Find(cp => cp.ProductId.Equals(product.ProductId));
+        var shoppingCartProduct = db.ShoppingCartProducts.FirstOrDefault(cp => cp.Id == cartProduct.Id);
         if (shoppingCartProduct != null)
         {
-            shoppingCartProduct.Quantity = newQuantity;
+            shoppingCartProduct.Quantity = cartProduct.Quantity;
             db.ShoppingCartProducts.Update(shoppingCartProduct);
             db.ShoppingCarts.Update(cart);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
-
 }
