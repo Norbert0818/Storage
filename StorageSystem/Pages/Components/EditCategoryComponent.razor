@@ -1,5 +1,6 @@
 ﻿@page "/editcategory/{categoryId}"
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize(Roles = "Admin, Manager")]
+
 
 @inject NavigationManager NavigationManager
 @inject IAddCategoryUseCase AddCategoryUseCase

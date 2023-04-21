@@ -10,9 +10,9 @@ namespace Plugins.DataStore.MySQL
 {
     public class OrderRepository : IOrderRepository
     {
-        private readonly YourDbContext _dbContext;
+        private readonly DataContext _dbContext;
 
-        public OrderRepository(YourDbContext dbContext)
+        public OrderRepository(DataContext dbContext)
         {
             _dbContext = dbContext;
         }

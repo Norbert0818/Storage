@@ -1,7 +1,6 @@
 ﻿@page "/categories"
+@attribute [Authorize(Roles = "Admin, Manager")]
 
-
-@attribute [Authorize(Roles = "Admin")]
 
 @inject NavigationManager NavigationManager
 @inject IViewCategoriesUseCase ViewCategoryUseCase

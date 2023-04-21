@@ -4,11 +4,13 @@
 @inject IAddProductToCartUseCase AddProductToCartUseCase
 @inject IGetCartUseCase GetCartUseCase
 @inject IGetCartProductsUseCase GetCartProductsUseCase
-@inject ICreateOrderUseCase CreateOrderUseCase
 @inject UserManager<IdentityUser> UserManager
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthStateProvider
+@inject DataContext dbContext
+@using Plugins.DataStore.MySQL
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Forms
 
 @if (products != null)
 {
@@ -50,12 +52,21 @@
                             <button type="button" class="btn btn-link" @onclick="() => RemoveProductFromCart(product.Key)">Remove From Cart</button>
                         </td>
                     </tr>
-                    
-                    
+
+                        total = (double)product.Key.Price * quantityMap[product.Key];
                 }
                 
             </table>
-            <button type="button" @onclick="OnClickOrder" class="btn btn-primary">Continue</button>
+                <div>
+                    Total: @total $
+                    
+                </div>
+                <button type="submit" @onclick="ContinueOrder" class="btn btn-primary">Continue</button>
+
+
+
+
+            
 }
 else
 {
@@ -63,6 +74,7 @@ else
 }
 
 @code {
+    private double? total = 0;
     private ShoppingCart cart;
     private List<KeyValuePair<Product, int>> products;
     private Dictionary<Product, int> quantityMap = new Dictionary<Product, int>();
@@ -112,29 +124,57 @@ else
         }
     }
 
-    private async void OnClickOrder()
+    private async Task CreateAndSaveOrderAsync()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        // Create the order object
-        var order = new Orders
+        if (user.Identity.IsAuthenticated)
+        {
+            var loggedInUser = await UserManager.GetUserAsync(user);
+            var userEmail = loggedInUser.Email;
+
+
+            var newOrder = new Orders
+                {
+                    CustomerId = loggedInUser.Id,
+                    CustomerEmail = userEmail,
+                    Address= "",
+                    CustomerName = "",
+                    CustomerPhoneNumber = "",
+                    OrderItem = "",
+                    WorkerName = "",
+                    WorkerPhoneNumber = ""
+
+                    // Set other properties as needed
+                };
+
+            // Set order items based on the current cart items
+            foreach (var product in products)
             {
-                CustomerEmail = user.Identity.Name,
-                CartProducts = cart.CartProducts,
-                Adress = "", // Set this to the address entered by the user
-                DeliveryDay = DateTime.Now, // Set this to the delivery day entered by the user
-                PickupDay = DateTime.Now, // Set this to the pickup day entered by the user
-                TaxNumber = 0, // Set this to the tax number entered by the user
-                DaysOfRenting = 0, // Set this to the number of days entered by the user
-            };
+                var orderItem = new ShoppingCartProduct
+                    {
+                        ProductId = product.Key.ProductId,
+                        Quantity = product.Value,
+                        // Set other properties as needed
+                    };
+                newOrder.OrderItems.Add(orderItem);
+            }
 
-        // Call the use case to create the order
-        await CreateOrderUseCase.ExecuteAsync(order);
+            // Add the new order to the Orders DbSet
+            dbContext.Orders.Add(newOrder);
 
-        // Navigate to the order confirmation page
+            // Save changes to the database
+            await dbContext.SaveChangesAsync();
+        }
+    }
+
+    private async Task ContinueOrder()
+    {
+        await CreateAndSaveOrderAsync();
         NavigationManager.NavigateTo("/order-confirmation");
     }
+
 
 }
 
