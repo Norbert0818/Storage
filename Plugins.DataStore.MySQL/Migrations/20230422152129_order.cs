@@ -18,7 +18,7 @@ namespace Plugins.DataStore.MySQL.Migrations
             migrationBuilder.RenameColumn(
                 name: "Adress",
                 table: "Orders",
-                newName: "OrderItem");
+                newName: "CustomerPhoneNumber");
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
@@ -62,13 +62,6 @@ namespace Plugins.DataStore.MySQL.Migrations
                 nullable: false)
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AddColumn<string>(
-                name: "CustomerPhoneNumber",
-                table: "Orders",
-                type: "longtext",
-                nullable: false)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.AddColumn<int>(
                 name: "DaysOfRenting",
                 table: "Orders",
@@ -91,11 +84,25 @@ namespace Plugins.DataStore.MySQL.Migrations
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<int>(
+                name: "ShoppingCartId",
+                table: "Orders",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
                 name: "TaxNumber",
                 table: "Orders",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
+
+            migrationBuilder.AddColumn<double>(
+                name: "TotalDiscount",
+                table: "Orders",
+                type: "double",
+                nullable: false,
+                defaultValue: 0.0);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCartProducts_OrderId",
@@ -142,10 +149,6 @@ namespace Plugins.DataStore.MySQL.Migrations
                 table: "Orders");
 
             migrationBuilder.DropColumn(
-                name: "CustomerPhoneNumber",
-                table: "Orders");
-
-            migrationBuilder.DropColumn(
                 name: "DaysOfRenting",
                 table: "Orders");
 
@@ -158,11 +161,19 @@ namespace Plugins.DataStore.MySQL.Migrations
                 table: "Orders");
 
             migrationBuilder.DropColumn(
+                name: "ShoppingCartId",
+                table: "Orders");
+
+            migrationBuilder.DropColumn(
                 name: "TaxNumber",
                 table: "Orders");
 
+            migrationBuilder.DropColumn(
+                name: "TotalDiscount",
+                table: "Orders");
+
             migrationBuilder.RenameColumn(
-                name: "OrderItem",
+                name: "CustomerPhoneNumber",
                 table: "Orders",
                 newName: "Adress");
 

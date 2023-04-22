@@ -11,7 +11,7 @@ using Plugins.DataStore.MySQL;
 namespace Plugins.DataStore.MySQL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230421204607_order")]
+    [Migration("20230422152129_order")]
     partial class order
     {
         /// <inheritdoc />
@@ -76,18 +76,20 @@ namespace Plugins.DataStore.MySQL.Migrations
                     b.Property<DateTime>("DeliveryDay")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("OrderItem")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("PickupDay")
                         .HasColumnType("datetime(6)");
 
                     b.Property<double>("Qty")
                         .HasColumnType("double");
 
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TaxNumber")
                         .HasColumnType("int");
+
+                    b.Property<double>("TotalDiscount")
+                        .HasColumnType("double");
 
                     b.Property<double>("UnitPrice")
                         .HasColumnType("double");

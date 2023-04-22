@@ -134,7 +134,11 @@ else
             var loggedInUser = await UserManager.GetUserAsync(user);
             var userEmail = loggedInUser.Email;
 
-
+            var ongoingOrders = dbContext.Orders.Where(o => o.CustomerId == loggedInUser.Id && o.ShoppingCartId == cart.Id).ToList();
+            if (ongoingOrders.Any())
+            {
+                return;
+            }
             var newOrder = new Orders
                 {
                     CustomerId = loggedInUser.Id,
@@ -142,23 +146,25 @@ else
                     Address= "",
                     CustomerName = "",
                     CustomerPhoneNumber = "",
-                    OrderItem = "",
                     WorkerName = "",
-                    WorkerPhoneNumber = ""
+                    WorkerPhoneNumber = "",
+                    ShoppingCartId = cart.Id
 
                     // Set other properties as needed
                 };
 
+
             // Set order items based on the current cart items
             foreach (var product in products)
             {
-                var orderItem = new ShoppingCartProduct
+                var orderItem = new Product
                     {
                         ProductId = product.Key.ProductId,
                         Quantity = product.Value,
+                        
                         // Set other properties as needed
-                    };
-                newOrder.OrderItems.Add(orderItem);
+                    };    
+                
             }
 
             // Add the new order to the Orders DbSet

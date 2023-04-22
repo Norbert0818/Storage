@@ -27,7 +27,7 @@ namespace CoreBuisness
         public int ShoppingCartId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public int? OrderId { get; set; }//remove this and new migration needed
+        public int? OrderId { get; set; }
         public virtual Orders Order { get; set; }
     }
 }

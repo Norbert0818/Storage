@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using StorageSystem.Data;
 using Plugins.DataStore.InMemory;
 using UseCases.CartUseCase;
+using UseCases.OrderUseCase;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AccountsConnection") ?? throw new InvalidOperationException("Connection string 'DatabaseContextConnection' not found.");
@@ -71,7 +72,7 @@ builder.Services.AddTransient<IViewUsersUseCase, ViewUsersUseCase>();
 builder.Services.AddTransient<IAddProductToCartUseCase, AddProductToCartUseCase>();
 builder.Services.AddTransient<IGetCartUseCase, GetCartUseCase>();
 builder.Services.AddTransient<IGetCartProductsUseCase, GetCartProductsUseCase>();
-//builder.Services.AddTransient<ICreateOrderUseCase, ICreateOrderUseCase>();
+builder.Services.AddTransient<IDeleteOrderUseCase, DeleteOrderUseCase>();
 
 var app = builder.Build();
 

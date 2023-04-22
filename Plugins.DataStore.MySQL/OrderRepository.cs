@@ -22,5 +22,12 @@ namespace Plugins.DataStore.MySQL
             _dbContext.Orders.Add(order);
             return await _dbContext.SaveChangesAsync();
         }
+        public void DeleteOrder(int orderId)
+        {
+            var order = _dbContext.Orders.Find(orderId);
+            if (order != null) return;
+            _dbContext.Orders.Remove(order);
+            _dbContext.SaveChanges();
+        }
     }
 }

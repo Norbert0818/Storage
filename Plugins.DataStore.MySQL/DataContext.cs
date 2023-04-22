@@ -35,6 +35,7 @@ namespace Plugins.DataStore.MySQL
                 .HasMany(c => c.CartProducts)
                 .WithOne(cp => cp.ShoppingCart)
                 .HasForeignKey(cp => cp.ShoppingCartId);
+
         }
     }
 }

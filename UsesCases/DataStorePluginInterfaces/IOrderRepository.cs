@@ -10,5 +10,6 @@ namespace UseCases.DataStorePluginInterfaces
     public interface IOrderRepository
     {
         Task<int> AddOrderAsync(Orders order);
+        void DeleteOrder(int orderId);
     }
 }
