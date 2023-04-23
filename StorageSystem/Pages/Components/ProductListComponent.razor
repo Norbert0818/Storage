@@ -5,7 +5,9 @@
 @inject IGetCartUseCase GetCartUseCase
 @inject UserManager<IdentityUser> UserManager
 @inject AuthenticationStateProvider AuthStateProvider
+@inject DataContext dbContext
 @using Microsoft.AspNetCore.Identity
+@using Plugins.DataStore.MySQL
 
 <h3>Products</h3>
 
@@ -54,10 +56,30 @@
 
         products = ViewProductsUseCase.Execute();
     }
+    //private async Task OnClickAddProduct(Product product)
+    //{
+    //    await Task.Run(() => AddProductToCartUseCase.Execute(cart, product));
+    //}
     private async Task OnClickAddProduct(Product product)
     {
+        if (cart == null)
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                var userId = UserManager.GetUserId(user);
+                cart = new ShoppingCart { UserId = userId };
+
+                dbContext.ShoppingCarts.Add(cart);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
         await Task.Run(() => AddProductToCartUseCase.Execute(cart, product));
     }
+
 
 
 }

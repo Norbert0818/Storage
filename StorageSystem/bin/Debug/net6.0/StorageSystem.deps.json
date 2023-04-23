@@ -16,7 +16,6 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.15",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.4",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.13",
-          "Plugins.DataStore.InMemory": "1.0.0",
           "Plugins.DataStore.MySQL": "1.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "7.0.0",
           "UseCases": "1.0.0"
@@ -2462,15 +2461,6 @@
           "CoreBuisness.dll": {}
         }
       },
-      "Plugins.DataStore.InMemory/1.0.0": {
-        "dependencies": {
-          "CoreBuisness": "1.0.0",
-          "UseCases": "1.0.0"
-        },
-        "runtime": {
-          "Plugins.DataStore.InMemory.dll": {}
-        }
-      },
       "Plugins.DataStore.MySQL/1.0.0": {
         "dependencies": {
           "CoreBuisness": "1.0.0",
@@ -3794,11 +3784,6 @@
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
     "CoreBuisness/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Plugins.DataStore.InMemory/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -4,12 +4,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace Plugins.DataStore.MySQL.Migrations
 {
     /// <inheritdoc />
-    public partial class productmigration : Migration
+    public partial class newmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,7 +38,8 @@ namespace Plugins.DataStore.MySQL.Migrations
                 {
                     OrderNumber = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     CustomerName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CustomerEmail = table.Column<string>(type: "longtext", nullable: false)
@@ -51,14 +50,38 @@ namespace Plugins.DataStore.MySQL.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     WorkerPhoneNumber = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    CustomerPhoneNumber = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Qty = table.Column<double>(type: "double", nullable: false),
                     UnitPrice = table.Column<double>(type: "double", nullable: false),
-                    Adress = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Address = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DeliveryDay = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    PickupDay = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TaxNumber = table.Column<int>(type: "int", nullable: false),
+                    DaysOfRenting = table.Column<int>(type: "int", nullable: false),
+                    TotalDiscount = table.Column<double>(type: "double", nullable: false),
+                    ShoppingCartId = table.Column<int>(type: "int", nullable: false),
+                    IsConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.OrderNumber);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -112,47 +135,70 @@ namespace Plugins.DataStore.MySQL.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "CategoryId", "Description", "Name" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "ShoppingCartProducts",
+                columns: table => new
                 {
-                    { 1, "Beverage", "Beverage" },
-                    { 2, "Bakery", "Bakery" },
-                    { 3, "Meat", "Meat" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "ProductId", "CategoryId", "Description", "ImageLink", "Name", "Price", "Quantity" },
-                values: new object[,]
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ShoppingCartId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
                 {
-                    { 1, 1, null, null, "Iced Tea", 1.99, 100 },
-                    { 2, 1, null, null, "Canada Dry", 1.99, 200 },
-                    { 3, 2, null, null, "Whole Wheat Bread", 1.5, 300 },
-                    { 4, 2, null, null, "White Bread", 1.5, 300 }
-                });
+                    table.PrimaryKey("PK_ShoppingCartProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCartProducts_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderNumber");
+                    table.ForeignKey(
+                        name: "FK_ShoppingCartProducts_ShoppingCarts_ShoppingCartId",
+                        column: x => x.ShoppingCartId,
+                        principalTable: "ShoppingCarts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCartProducts_OrderId",
+                table: "ShoppingCartProducts",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCartProducts_ShoppingCartId",
+                table: "ShoppingCartProducts",
+                column: "ShoppingCartId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "ShoppingCartProducts");
 
             migrationBuilder.DropTable(
                 name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCarts");
         }
     }
 }

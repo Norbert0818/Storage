@@ -11,5 +11,9 @@ namespace UseCases.DataStorePluginInterfaces
     {
         Task<int> AddOrderAsync(Orders order);
         void DeleteOrder(int orderId);
+        Task<Orders> GetOrderAsync(int orderNumber);
+        Task<int> UpdateOrderAsync(Orders order);
+        Orders GetOrderByOrderNumber(int orderNumber);
+        Task<List<Orders>> GetOrdersByCustomerIdAsync(string customerId);
     }
 }

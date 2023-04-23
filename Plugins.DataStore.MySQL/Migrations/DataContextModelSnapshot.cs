@@ -73,6 +73,10 @@ namespace Plugins.DataStore.MySQL.Migrations
                     b.Property<DateTime>("DeliveryDay")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("OrderedProductNames")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("PickupDay")
                         .HasColumnType("datetime(6)");
 
@@ -82,10 +86,16 @@ namespace Plugins.DataStore.MySQL.Migrations
                     b.Property<int>("ShoppingCartId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<int>("TaxNumber")
                         .HasColumnType("int");
 
                     b.Property<double>("TotalDiscount")
+                        .HasColumnType("double");
+
+                    b.Property<double?>("TotalPrice")
                         .HasColumnType("double");
 
                     b.Property<double>("UnitPrice")

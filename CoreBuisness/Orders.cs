@@ -25,7 +25,7 @@ namespace CoreBuisness
         public string CustomerPhoneNumber { get; set; }
         public double Qty { get; set; }
         public double UnitPrice { get; set; }
-        public double TotalPrice { get { return Qty * UnitPrice; } }
+        public double? TotalPrice { get; set; }
         [Required(ErrorMessage = "Address is required")]
         public string Address { get; set; }
         public DateTime DeliveryDay { get; set; } = DateTime.Now;
@@ -35,6 +35,8 @@ namespace CoreBuisness
         public int DaysOfRenting { get; set; }
         public double TotalDiscount { get; set; }
         public int ShoppingCartId { get; set; }
+        public OrderStatusEnum Status { get; set; }
+        public string OrderedProductNames { get; set; }
         public ICollection<ShoppingCartProduct> OrderItems { get; set; } = new List<ShoppingCartProduct>();
     }
 }

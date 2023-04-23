@@ -1,9 +1,4 @@
-﻿@page "/orderstatus"
-
-@inject IOrderRepository OrderRepository
-@inject NavigationManager NavigationManager
-@using UseCases.DataStorePluginInterfaces
-@using CoreBuisness
+﻿
 
 @if (OrderStatus == OrderStatusEnum.Pending)
 {
@@ -24,9 +19,7 @@ else if (OrderStatus == OrderStatusEnum.Declined)
     </div>
 }
 
-
 @code {
-    [Parameter] public string OrderNumber { get; set; }
     [Parameter] public OrderStatusEnum OrderStatus { get; set; }
 
     public enum OrderStatusEnum
@@ -34,20 +27,5 @@ else if (OrderStatus == OrderStatusEnum.Declined)
         Pending,
         Confirmed,
         Declined
-    }
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if (int.TryParse(OrderNumber, out int orderNumber))
-        {
-            Orders order = OrderRepository.GetOrderByOrderNumber(orderNumber);
-            
-        }
-        else
-        {
-            // Handle the case when OrderNumber cannot be parsed to an integer.
-            // You may want to navigate back to the cart or show an error message.
-        }
     }
 }

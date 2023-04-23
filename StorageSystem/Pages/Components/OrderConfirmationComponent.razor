@@ -1,7 +1,9 @@
-﻿@page "/order-confirmation"
+﻿@page "/order-confirmation/{OrderNumber}"
 
+@inject IOrderRepository OrderRepository
 @inject NavigationManager NavigationManager
 @inject IDeleteOrderUseCase DeleteOrderUseCase
+@using UseCases.DataStorePluginInterfaces
 
 
 
@@ -36,28 +38,45 @@
         <label for="taxnumber">Tax Number</label>
         <InputNumber id="taxnumber" @bind-Value="order.TaxNumber" class="form-control"></InputNumber>
     </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Confirm Order</button>
+    
 </EditForm>
-
 <br />
-<button type="button" class="btn btn-primary">Confirm Order</button>
-@*<button type="button" class="btn btn-primary" @onclick="@(()=>OnDeleteOrder(order.OrderNumber))">Cancel</button>*@
+<button type="button" class="btn btn-primary" @onclick="@(()=>OnDeleteOrder(order.OrderNumber))">Cancel</button>
+
 
 @code {
+    [Parameter] public string OrderNumber { get; set; }
+
     private Orders order;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        order = new Orders();
+        //get order from database by OrderNumber
+
+
+        if (int.TryParse(OrderNumber, out int orderNumber))
+        {
+            order = OrderRepository.GetOrderByOrderNumber(orderNumber);
+        }
+        else
+        {
+            
+        }
     }
-    private void OnValidSubmit()
+
+    private async Task OnValidSubmit()
     {
+        order.Status = OrderStatusEnum.Pending;
+        await OrderRepository.UpdateOrderAsync(order);
         NavigationManager.NavigateTo("/orderstatus");
     }
-    //private void OnDeleteOrder(int orderId)
-    //{
-    //    DeleteOrderUseCase.Execute(orderId);
-    //    NavigationManager.NavigateTo("/cart");
-    //}
+    private void OnDeleteOrder(int orderId)
+    {
+        DeleteOrderUseCase.Execute(orderId);
+        NavigationManager.NavigateTo("/cart");
+    }
 
 }

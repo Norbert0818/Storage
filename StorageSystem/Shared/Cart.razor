@@ -1,4 +1,9 @@
-﻿<style>
+﻿
+@using Plugins.DataStore.MySQL
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Forms
+
+<style>
     .nav-link .fa-shopping-cart {
         color: blue;
     }
@@ -10,11 +15,33 @@
 
 <a class="nav-link" href="cart">
     <span class="oi oi-cart"></span>
-    
-    <span class="badge badge-pill badge-danger">@CartItemCount</span>
 </a>
 
 @code {
-    [Parameter]
-    public int CartItemCount { get; set; }
+
+    [Inject] public NavigationManager NavigationManager { get; set; }
+    [Inject] public AuthenticationStateProvider AuthStateProvider { get; set; }
+    [Inject] public UserManager<IdentityUser> UserManager { get; set; }
+    [Inject] public DataContext DbContext { get; set; }
+
+    private async Task NavigateToCart()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = UserManager.GetUserId(user);
+            var userCart = DbContext.ShoppingCarts.FirstOrDefault(c => c.UserId == userId);
+
+            if (userCart == null)
+            {
+                userCart = new ShoppingCart { UserId = userId };
+                DbContext.ShoppingCarts.Add(userCart);
+                await DbContext.SaveChangesAsync();
+            }
+        }
+
+        NavigationManager.NavigateTo("/cart");
+    }
 }

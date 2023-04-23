@@ -1,0 +1,68 @@
+﻿@page "/orders"
+
+@inject IOrderRepository OrderRepository
+@inject UserManager<IdentityUser> UserManager
+@inject AuthenticationStateProvider AuthStateProvider
+@using Microsoft.AspNetCore.Identity
+@using Plugins.DataStore.MySQL
+@using UseCases.DataStorePluginInterfaces
+
+<h1>Orders</h1>
+
+@if (orders == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order Number</th>
+                <th>Products</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in orders)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@order.OrderedProductNames</td>
+                    <td>@order.TotalPrice $</td>
+                    <td>@order.Status</td>
+                    <td>
+                        @if (order.Status == OrderStatusEnum.Pending)
+                        {
+                            <button class="btn btn-danger" @onclick="(() => CancelOrder(order.OrderNumber))">Cancel</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Orders> orders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var loggedUser = await UserManager.GetUserAsync(user);
+        orders = await OrderRepository.GetOrdersByCustomerIdAsync(loggedUser.Id);
+    }
+
+    private async Task CancelOrder(int orderNumber)
+    {
+        var order = await OrderRepository.GetOrderAsync(orderNumber);
+        if (order != null && order.Status == OrderStatusEnum.Pending)
+        {
+            OrderRepository.DeleteOrder(orderNumber);
+            orders.Remove(order);
+        }
+    }
+}

@@ -9,7 +9,6 @@ using UseCases.DataStorePluginInterfaces;
 using UseCases.UseCaseInterfaces;
 using Microsoft.AspNetCore.Identity;
 using StorageSystem.Data;
-using Plugins.DataStore.InMemory;
 using UseCases.CartUseCase;
 using UseCases.OrderUseCase;
 

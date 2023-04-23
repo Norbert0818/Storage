@@ -1,4 +1,5 @@
 ﻿using CoreBuisness;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,32 @@ namespace Plugins.DataStore.MySQL
         public void DeleteOrder(int orderId)
         {
             var order = _dbContext.Orders.Find(orderId);
-            if (order != null) return;
+            if (order == null) return;
             _dbContext.Orders.Remove(order);
             _dbContext.SaveChanges();
         }
+        public async Task<Orders> GetOrderAsync(int orderNumber)
+        {
+            return await _dbContext.Orders.FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
+        }
+        public async Task<int> UpdateOrderAsync(Orders order)
+        {
+            _dbContext.Orders.Update(order);
+            return await _dbContext.SaveChangesAsync();
+        }
+
+        public Orders GetOrderByOrderNumber(int orderNumber)
+        {
+            return _dbContext.Orders.FirstOrDefault(o => o.OrderNumber == orderNumber);
+        }
+
+        public async Task<List<Orders>> GetOrdersByCustomerIdAsync(string customerId)
+        {
+            return await _dbContext.Orders
+                .Include(o => o.OrderItems)
+                .Where(o => o.CustomerId == customerId)
+                .ToListAsync();
+        }
+
     }
 }

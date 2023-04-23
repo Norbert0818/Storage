@@ -11,8 +11,8 @@ using Plugins.DataStore.MySQL;
 namespace Plugins.DataStore.MySQL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230404173904_product-migration")]
-    partial class productmigration
+    [Migration("20230423134812_newmigration")]
+    partial class newmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,26 +39,6 @@ namespace Plugins.DataStore.MySQL.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = 1,
-                            Description = "Beverage",
-                            Name = "Beverage"
-                        },
-                        new
-                        {
-                            CategoryId = 2,
-                            Description = "Bakery",
-                            Name = "Bakery"
-                        },
-                        new
-                        {
-                            CategoryId = 3,
-                            Description = "Meat",
-                            Name = "Meat"
-                        });
                 });
 
             modelBuilder.Entity("CoreBuisness.Orders", b =>
@@ -67,7 +47,7 @@ namespace Plugins.DataStore.MySQL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Adress")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -78,14 +58,40 @@ namespace Plugins.DataStore.MySQL.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("CustomerPhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DaysOfRenting")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DeliveryDay")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("PickupDay")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<double>("Qty")
+                        .HasColumnType("double");
+
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TaxNumber")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalDiscount")
                         .HasColumnType("double");
 
                     b.Property<double>("UnitPrice")
@@ -131,8 +137,7 @@ namespace Plugins.DataStore.MySQL.Migrations
                         .IsRequired()
                         .HasColumnType("double");
 
-                    b.Property<int?>("Quantity")
-                        .IsRequired()
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId");
@@ -140,40 +145,47 @@ namespace Plugins.DataStore.MySQL.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            ProductId = 1,
-                            CategoryId = 1,
-                            Name = "Iced Tea",
-                            Price = 1.99,
-                            Quantity = 100
-                        },
-                        new
-                        {
-                            ProductId = 2,
-                            CategoryId = 1,
-                            Name = "Canada Dry",
-                            Price = 1.99,
-                            Quantity = 200
-                        },
-                        new
-                        {
-                            ProductId = 3,
-                            CategoryId = 2,
-                            Name = "Whole Wheat Bread",
-                            Price = 1.5,
-                            Quantity = 300
-                        },
-                        new
-                        {
-                            ProductId = 4,
-                            CategoryId = 2,
-                            Name = "White Bread",
-                            Price = 1.5,
-                            Quantity = 300
-                        });
+            modelBuilder.Entity("CoreBuisness.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShoppingCarts");
+                });
+
+            modelBuilder.Entity("CoreBuisness.ShoppingCartProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ShoppingCartId");
+
+                    b.ToTable("ShoppingCartProducts");
                 });
 
             modelBuilder.Entity("CoreBuisness.Transaction", b =>
@@ -221,9 +233,36 @@ namespace Plugins.DataStore.MySQL.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("CoreBuisness.ShoppingCartProduct", b =>
+                {
+                    b.HasOne("CoreBuisness.Orders", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("CoreBuisness.ShoppingCart", "ShoppingCart")
+                        .WithMany("CartProducts")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("ShoppingCart");
+                });
+
             modelBuilder.Entity("CoreBuisness.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("CoreBuisness.Orders", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("CoreBuisness.ShoppingCart", b =>
+                {
+                    b.Navigation("CartProducts");
                 });
 #pragma warning restore 612, 618
         }

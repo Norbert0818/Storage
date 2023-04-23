@@ -124,7 +124,7 @@ else
         }
     }
 
-    private async Task CreateAndSaveOrderAsync()
+    private async Task<int> CreateAndSaveOrderAsync()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
@@ -137,7 +137,7 @@ else
             var ongoingOrders = dbContext.Orders.Where(o => o.CustomerId == loggedInUser.Id && o.ShoppingCartId == cart.Id).ToList();
             if (ongoingOrders.Any())
             {
-                return;
+                return 0;
             }
             var newOrder = new Orders
                 {
@@ -148,8 +148,10 @@ else
                     CustomerPhoneNumber = "",
                     WorkerName = "",
                     WorkerPhoneNumber = "",
-                    ShoppingCartId = cart.Id
-
+                    ShoppingCartId = cart.Id,
+                    Qty = products.Sum(p => p.Value),
+                    TotalPrice = products.Sum(p => p.Key.Price * p.Value),
+                    OrderedProductNames = string.Join(", ", products.Select(p => p.Key.Name))
                     // Set other properties as needed
                 };
 
@@ -161,10 +163,10 @@ else
                     {
                         ProductId = product.Key.ProductId,
                         Quantity = product.Value,
-                        
+
                         // Set other properties as needed
                     };    
-                
+
             }
 
             // Add the new order to the Orders DbSet
@@ -172,13 +174,15 @@ else
 
             // Save changes to the database
             await dbContext.SaveChangesAsync();
+            return newOrder.OrderNumber;
         }
+        return 0;
     }
 
     private async Task ContinueOrder()
     {
-        await CreateAndSaveOrderAsync();
-        NavigationManager.NavigateTo("/order-confirmation");
+        int orderNumber = await CreateAndSaveOrderAsync();
+        NavigationManager.NavigateTo($"/order-confirmation/{orderNumber}");
     }
 
 
