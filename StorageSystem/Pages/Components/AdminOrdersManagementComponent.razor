@@ -15,6 +15,11 @@ else
             <tr>
                 <th>Order Number</th>
                 <th>Customer Name</th>
+                <th>Products</th>
+                <th>Delivery Day</th>
+                <th>Pickup Day</th>
+                <th>Days Of Renting</th>
+                <th>Total Price</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
@@ -25,6 +30,11 @@ else
                 <tr>
                     <td>@order.OrderNumber</td>
                     <td>@order.CustomerName</td>
+                    <td>@order.OrderedProductNames</td>
+                    <td>@order.DeliveryDay.ToShortDateString()</td>
+                    <td>@order.PickupDay.ToShortDateString()</td>
+                    <td>@order.DaysOfRenting</td>
+                    <td>@order.TotalPrice $</td>
                     <td>@order.Status</td>
                     <td>
                         @if (order.Status != OrderStatusEnum.Confirmed && order.Status != OrderStatusEnum.Declined)

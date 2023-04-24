@@ -151,7 +151,7 @@ else
                     ShoppingCartId = cart.Id,
                     Qty = products.Sum(p => p.Value),
                     TotalPrice = products.Sum(p => p.Key.Price * p.Value),
-                    OrderedProductNames = string.Join(", ", products.Select(p => p.Key.Name))
+                    OrderedProductNames = string.Join(", ", products.Select(p => $"{p.Key.Name} x {p.Value}")),
                     // Set other properties as needed
                 };
 
