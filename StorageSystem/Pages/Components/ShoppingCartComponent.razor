@@ -52,8 +52,6 @@
                             <button type="button" class="btn btn-link" @onclick="() => RemoveProductFromCart(product.Key)">Remove From Cart</button>
                         </td>
                     </tr>
-
-                        total = (double)product.Key.Price * quantityMap[product.Key];
                 }
                 
             </table>
@@ -100,6 +98,7 @@ else
             {
                 quantityMap[product.Key] = product.Value;
             }
+            CalculateTotal();
         }
         else
         {
@@ -121,6 +120,7 @@ else
             cartProduct.Quantity = quantity;
             await AddProductToCartUseCase.UpdateProductQuantity(cart, cartProduct);
             await LoadCartData();
+            CalculateTotal();
         }
     }
 
@@ -134,10 +134,10 @@ else
             var loggedInUser = await UserManager.GetUserAsync(user);
             var userEmail = loggedInUser.Email;
 
-            var ongoingOrders = dbContext.Orders.Where(o => o.CustomerId == loggedInUser.Id && o.ShoppingCartId == cart.Id).ToList();
+            var ongoingOrders = dbContext.Orders.Where(o => o.CustomerId == loggedInUser.Id && o.ShoppingCartId == cart.Id && o.Status == OrderStatusEnum.Pending).ToList();
             if (ongoingOrders.Any())
             {
-                return 0;
+                return ongoingOrders.OrderByDescending(o => o.CreatedDate).First().OrderNumber; 
             }
             var newOrder = new Orders
                 {
@@ -178,13 +178,49 @@ else
         }
         return 0;
     }
+    private async Task<bool> CanCreateNewOrder()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var loggedInUser = await UserManager.GetUserAsync(user);
+
+            var latestOrder = dbContext.Orders
+                .Where(o => o.CustomerId == loggedInUser.Id)
+                .OrderByDescending(o => o.CreatedDate)
+                .FirstOrDefault();
+
+            if (latestOrder == null || latestOrder.Status == OrderStatusEnum.Confirmed || latestOrder.Status == OrderStatusEnum.Declined)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void CalculateTotal()
+    {
+        total = 0;
+        foreach (var product in products)
+        {
+            total += product.Key.Price * quantityMap[product.Key];
+        }
+    } 
 
     private async Task ContinueOrder()
     {
         int orderNumber = await CreateAndSaveOrderAsync();
-        NavigationManager.NavigateTo($"/order-confirmation/{orderNumber}");
+        if (orderNumber > 0)
+        {
+            NavigationManager.NavigateTo($"/order-confirmation/{orderNumber}");
+        }
+        else
+        {
+            Console.WriteLine("Failed to create order.");
+        }
     }
-
 
 }
 
