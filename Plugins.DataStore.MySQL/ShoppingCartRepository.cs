@@ -31,16 +31,17 @@ public class ShoppingCartRepository : IShoppingCartRepository
         if (shoppingCartProduct != null)
         {
             shoppingCartProduct.Quantity += 1;
+            db.ShoppingCartProducts.Update(shoppingCartProduct);
         }
         else
         {
             shoppingCartProduct = new ShoppingCartProduct();
             shoppingCartProduct.ProductId = product.ProductId;
             shoppingCartProduct.Quantity = 1;
+            cart.CartProducts.Add(shoppingCartProduct);
+            db.ShoppingCartProducts.Add(shoppingCartProduct);
         }
-
-        cart.CartProducts.Add(shoppingCartProduct);
-        db.ShoppingCartProducts.Add(shoppingCartProduct);
+        
         db.ShoppingCarts.Update(cart);
         db.SaveChanges();
     }
