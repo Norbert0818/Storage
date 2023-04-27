@@ -57,14 +57,10 @@
             </table>
                 <div>
                     Total: @total $
-                    
-                </div>
+                     
+                </div>  
                 <button type="submit" @onclick="ContinueOrder" class="btn btn-primary">Continue</button>
-
-
-
-
-            
+              
 }
 else
 {
@@ -138,8 +134,8 @@ else
                     WorkerPhoneNumber = "",
                     ShoppingCartId = cart.Id,
                     Qty = cart.ShoppingCartProducts.Sum(e => e.Quantity),
-                    TotalPrice = cart.ShoppingCartProducts.Select(scp => scp.Product).ToList().Sum(p => p.Price * p.Quantity),
-                    OrderedProductNames = "",
+                    TotalPrice = cart.ShoppingCartProducts.Sum(scp => scp.Product.Price * scp.Quantity),
+                    OrderedProductNames = string.Join(", ", cart.ShoppingCartProducts.Select(p => $"{p.Product.Name} x {p.Quantity}")),
                     // Set other properties as needed
                 };
 

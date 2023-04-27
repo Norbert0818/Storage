@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBuisness", "CoreBuisnes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugins.DataStore.MySQL", "Plugins.DataStore.MySQL\Plugins.DataStore.MySQL.csproj", "{8551FE89-0FEC-42C3-AE9E-8B61688708B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCases", "TestCases\TestCases.csproj", "{A278C735-A273-46FC-AC6C-12D883E652BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCases", "TestCases\TestCases.csproj", "{A278C735-A273-46FC-AC6C-12D883E652BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

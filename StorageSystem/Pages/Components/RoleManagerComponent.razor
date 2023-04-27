@@ -1,0 +1,152 @@
+﻿@page "/rolemanager"
+
+@using Microsoft.AspNetCore.Identity
+@using System.ComponentModel.DataAnnotations
+@using StorageSystem.Services;
+@inject RoleManager<IdentityRole> RoleManager
+@inject UserManager<IdentityUser> UserManager
+@inject IRoleService RoleService
+
+<h3>Role Manager</h3>
+
+<div>
+    <label for="roleName">Role Name:</label>
+    <input id="roleName" @bind="NewRoleName" />
+    <button @onclick="CreateRole">Create Role</button>
+</div>
+
+@if (Roles != null)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Role</th>
+                <th>Users</th>
+                <th>Add User</th>
+                <th>Remove Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Roles)
+            {
+                <tr>
+                    <td>@role.Name</td>
+                    <td>@(string.Join(", ", UsersInRole[role.Id]))</td>
+                    <td>
+                        <input id="@($"email-{role.Id}")" @bind="Emails[role.Id]" placeholder="User email" />
+                        <button @onclick="() => AddUserToRole(role.Id)">Add to role</button>
+                    </td>
+                    <td>
+                        <button @onclick="() => RemoveRole(role.Id)">Remove Role</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string NewRoleName { get; set; } = string.Empty;
+    private List<IdentityRole> Roles { get; set; }
+    private Dictionary<string, List<string>> UsersInRole { get; set; } = new Dictionary<string, List<string>>();
+    private Dictionary<string, string> Emails { get; set; } = new Dictionary<string, string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Roles = await RoleService.GetAllRolesAsync();
+        foreach (var role in Roles)
+        {
+            Emails[role.Id] = string.Empty;
+            UsersInRole[role.Id] = new List<string>();
+
+            var users = await RoleService.GetUsersInRoleAsync(role.Name);
+            foreach (var user in users)
+            {
+                UsersInRole[role.Id].Add(user.Email);
+            }
+        }
+    }
+
+    private async Task CreateRole()
+    {
+        var result = await RoleService.CreateRoleAsync(NewRoleName);
+        if (result.Succeeded)
+        {
+            var role = new IdentityRole(NewRoleName);
+            Roles.Add(role);
+            Emails[role.Id] = string.Empty;
+            UsersInRole[role.Id] = new List<string>();
+            NewRoleName = string.Empty;
+        }
+        else
+        {
+            // Display error messages
+        }
+    }
+
+    private async Task AddUserToRole(string roleId)
+    {
+        var email = Emails[roleId];
+        var user = await UserManager.FindByEmailAsync(email);
+
+        if (user != null)
+        {
+            // Get the user's current roles
+            var currentRoles = await UserManager.GetRolesAsync(user);
+
+            // Remove the user from their current roles
+            foreach (var role in currentRoles)
+            {
+                await RoleService.RemoveUserFromRoleAsync(user, role);
+            }
+
+            // Add the user to the new role
+            var roleToAdd = Roles.FirstOrDefault(r => r.Id == roleId);
+            if (roleToAdd != null)
+            {
+                var result = await RoleService.AddUserToRoleAsync(user, roleToAdd.Name);
+                if (result.Succeeded)
+                {
+                    // Remove the user from their previous role in the UI
+                    foreach (var role in Roles)
+                    {
+                        UsersInRole[role.Id].Remove(email);
+                    }
+
+                    // Add the user to the new role in the UI
+                    UsersInRole[roleId].Add(email);
+                    Emails[roleId] = string.Empty;
+                }
+                else
+                {
+                    // Display error messages
+                }
+            }
+        }
+        else
+        {
+            // Display error messages
+        }
+    }
+
+
+    private async Task RemoveRole(string roleId)
+    {
+        var role = Roles.FirstOrDefault(r => r.Id == roleId);
+        if (role != null)
+        {
+            var result = await RoleService.DeleteRoleAsync(role);
+            if (result.Succeeded)
+            {
+                Roles.Remove(role);
+                UsersInRole.Remove(role.Id);
+                Emails.Remove(role.Id);
+            }
+            else
+            {
+                // Display error messages
+            }
+        }
+    }
+
+}

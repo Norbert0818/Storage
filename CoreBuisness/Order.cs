@@ -38,6 +38,7 @@ namespace CoreBuisness
         public string? OrderedProductNames { get; set; }
         [ForeignKey("ShoppingCartId")]
         public ShoppingCart? ShoppingCart { get; set; }
+        //public ICollection<WorkerTask> Tasks { get; set; } = new List<WorkerTask>();
         //public ICollection<ShoppingCartProduct> OrderItems { get; set; } = new List<ShoppingCartProduct>();
     }
 }

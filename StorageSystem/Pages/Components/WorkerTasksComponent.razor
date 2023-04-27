@@ -1,8 +1,71 @@
-﻿@page "/employee/tasks"
+﻿@page "/worker/tasks"
 @attribute [Authorize(Roles = "Employee")]
+
+@using Microsoft.EntityFrameworkCore;
+@using Plugins.DataStore.MySQL
+@using Microsoft.AspNetCore.Identity
+@using CoreBuisness.User
+@using Microsoft.AspNetCore.Components.Authorization;
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataContext dbContext
+
 
 <h3>My Tasks</h3>
 
+@if (workerTasks == null)
+{
+    <p>Loading tasks...</p>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Task ID</th>
+                <th>Order Number</th>
+                <th>Description</th>
+                <th>Assigned Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in workerTasks)
+            {
+                <tr>
+                    <td>@task.Id</td>
+                    <td>@task.OrderId</td>
+                    <td>@task.Description</td>
+                    <td>@task.AssignedDate.ToShortDateString()</td>
+                    <td>@(task.IsCompleted ? "Completed" : "Pending")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 @code {
+    private List<WorkerTask> workerTasks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var identityUser = await UserManager.GetUserAsync(user);
+            string currentUserId = identityUser?.Id;
+
+            workerTasks = await dbContext.WorkerTasks
+                .Where(t => t.WorkerId == currentUserId)
+                .ToListAsync();
+        }
+        else
+        {
+            // Handle the situation when the user is not authenticated
+        }
+    }
 
 }

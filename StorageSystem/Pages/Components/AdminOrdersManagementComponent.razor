@@ -2,6 +2,12 @@
 @inject DataContext dbContext
 @using Plugins.DataStore.MySQL
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity
+@using CoreBuisness.User
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+@inject AccountContext AccountContext
+
 
 
 @if (allOrders == null)
@@ -22,6 +28,7 @@ else
                 <th>Total Price</th>
                 <th>Status</th>
                 <th>Actions</th>
+                <th>Add Task</th>
             </tr>
         </thead>
         <tbody>
@@ -41,26 +48,67 @@ else
                         {
                             <button class="btn btn-success" @onclick="() => UpdateOrderStatus(order, OrderStatusEnum.Confirmed)">Confirm</button>
                             <button class="btn btn-danger" @onclick="() => UpdateOrderStatus(order, OrderStatusEnum.Declined)">Decline</button>
+                            
                         }
+                        
+                    </td>
+                    <td>
+                        <select @bind="selectedWorker" class="form-select">
+                            <option value="">Select an employee</option>
+                            @foreach (var employee in employees)
+                            {
+                                <option value="@employee.Id">@employee.UserName</option>
+                            }
+                        </select>
+                        <button class="btn btn-primary" @onclick="() => AssignTaskToWorker(order, selectedWorker)">Assign</button>
                     </td>
                 </tr>
+                
             }
         </tbody>
     </table>
-
+    
 }
 
 @code {
     private List<Order> allOrders;
+    private string selectedWorker;
+
+    private IList<IdentityUser> employees;
 
     protected override async Task OnInitializedAsync()
     {
         allOrders = await dbContext.Orders.ToListAsync();
+        employees = (List<IdentityUser>)await GetUsersInEmployeeRole();
     }
+
+    private async Task<IList<IdentityUser>> GetUsersInEmployeeRole()
+    {
+        var usersInRole = await UserManager.GetUsersInRoleAsync("Employee");
+        return usersInRole;
+    }
+
     private async Task UpdateOrderStatus(Order order, OrderStatusEnum status)
     {
         order.Status = status;
         dbContext.Orders.Update(order);
+        await dbContext.SaveChangesAsync();
+    }
+
+    private async Task AssignTaskToWorker(Order order, string workerId)
+    {
+        if (string.IsNullOrEmpty(workerId)) return;
+
+        var newTask = new WorkerTask
+            {
+                OrderId = order.Id,
+                WorkerId = workerId,
+                Description = $"Process order {order.Id}",
+                AssignedDate = DateTime.Now,
+                IsCompleted = false
+            };
+
+        dbContext.WorkerTasks.Add(newTask);
         await dbContext.SaveChangesAsync();
     }
 }

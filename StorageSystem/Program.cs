@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using StorageSystem.Data;
 using UseCases.CartUseCase;
 using UseCases.OrderUseCase;
+using StorageSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AccountsConnection") ?? throw new InvalidOperationException("Connection string 'DatabaseContextConnection' not found.");
@@ -27,15 +28,12 @@ builder.Services.AddDbContext<DataContext>(options =>
   options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
 
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<AccountContext>();
-
-//builder.Services.AddAuthorization(options =>
-//    {
-//        options.AddPolicy("AdminOnly", p => p.RequireClaim("Position", "Admin"));
-//        options.AddPolicy("WorkerOnly", p => p.RequireClaim("Position", "Admin", "Worker"));
-//    });
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddRoles<IdentityRole>()
+//    .AddEntityFrameworkStores<AccountContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AccountContext>()
+    .AddRoleManager<RoleManager<IdentityRole>>();
 
 
 
@@ -56,6 +54,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
 builder.Services.AddTransient<IAddCategoryUseCase, AddCategoryUseCase>();

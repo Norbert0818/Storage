@@ -24,21 +24,13 @@ namespace Plugins.DataStore.MySQL
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
+        public DbSet<WorkerTask> WorkerTasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*
-            modelBuilder.Entity<Category>()
-                .HasMany(c => c.Products)
-                .WithOne(p => p.Category)
-                .HasForeignKey(p => p.CategoryId);
-            modelBuilder.Entity<ShoppingCart>()
-                .HasMany(c => c.Products)
-                .WithOne(cp => cp.ShoppingCart)
-                .HasForeignKey(cp => cp.ShoppingCartId);
-            */
+
             modelBuilder.Entity<ShoppingCartProduct>()
-                .HasKey(sc => new { sc.ShoppingCartId, sc.ProductId });
+                .HasKey(sp => new { sp.ShoppingCartId, sp.ProductId });
 
             modelBuilder.Entity<ShoppingCartProduct>()
                 .HasOne(sc => sc.ShoppingCart)
@@ -49,6 +41,7 @@ namespace Plugins.DataStore.MySQL
                 .HasOne(sc => sc.Product)
                 .WithMany(p => p.ShoppingCartProducts)
                 .HasForeignKey(sc => sc.ProductId);
+
         }
     }
 }
