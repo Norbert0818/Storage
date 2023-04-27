@@ -6,6 +6,6 @@ namespace UseCases.UseCaseInterfaces
     public interface IViewProductsUseCase
     {
         IEnumerable<Product> Execute();
-        List<KeyValuePair<Product, int>> ConvertCartProductsToProducts(List<ShoppingCartProduct> cartProducts);
+        //List<KeyValuePair<Product, int>> ConvertCartProductsToProducts(List<Product> cartProducts);
     }
 }

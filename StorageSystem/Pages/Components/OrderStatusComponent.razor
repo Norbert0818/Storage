@@ -41,7 +41,7 @@ else if (OrderStatus == OrderStatusEnum.Declined)
         base.OnInitialized();
         if (int.TryParse(OrderNumber, out int orderNumber))
         {
-            Orders order = OrderRepository.GetOrderByOrderNumber(orderNumber);
+            Order order = OrderRepository.GetOrderByOrderNumber(orderNumber);
             
         }
         else

@@ -43,13 +43,13 @@
     
 </EditForm>
 <br />
-<button type="button" class="btn btn-primary" @onclick="@(()=>OnDeleteOrder(order.OrderNumber))">Cancel</button>
+<button type="button" class="btn btn-primary" @onclick="@(()=>OnDeleteOrder(order.Id))">Cancel</button>
 
 
 @code {
     [Parameter] public string OrderNumber { get; set; }
 
-    private Orders order;
+    private Order order;
 
     protected override void OnInitialized()
     {

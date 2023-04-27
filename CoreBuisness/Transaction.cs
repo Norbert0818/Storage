@@ -8,7 +8,7 @@ namespace CoreBuisness
 {
     public class Transaction
     {
-        public int TransactionId { get; set; }
+        public int Id { get; set; }
         public DateTime TimeStamp { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; } // in case product name changes

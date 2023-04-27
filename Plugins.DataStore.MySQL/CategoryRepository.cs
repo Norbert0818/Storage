@@ -39,7 +39,7 @@ namespace Plugins.DataStore.MySQL
 
         public void UpdateCategory(Category category)
         {
-            var cat = db.Categories.Find(category.CategoryId);
+            var cat = db.Categories.Find(category.Id);
             cat.Name = category.Name;
             cat.Description = category.Description;
             db.SaveChanges();

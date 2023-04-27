@@ -24,15 +24,15 @@ namespace UseCases
             return productRepository.GetProducts();
         }
 
-        public List<KeyValuePair<Product, int>> ConvertCartProductsToProducts(List<ShoppingCartProduct> cartProducts)
-        {
-            List<KeyValuePair<Product, int>> products = new List<KeyValuePair<Product, int>>();
-            foreach (var cartProduct in cartProducts)
-            {
-                products.Add(new KeyValuePair<Product, int>(productRepository.GetProductById(cartProduct.ProductId), cartProduct.Quantity));
-            }
+        //public List<KeyValuePair<Product, int>> ConvertCartProductsToProducts(List<Product> cartProducts)
+        //{
+        //    List<KeyValuePair<Product, int>> products = new List<KeyValuePair<Product, int>>();
+        //    foreach (var cartProduct in cartProducts)
+        //    {
+        //        products.Add(new KeyValuePair<Product, int>(productRepository.GetProductById(cartProduct.Id), cartProduct.Quantity));
+        //    }
 
-            return products;
-        }
+        //    return products;
+        //}
     }
 }

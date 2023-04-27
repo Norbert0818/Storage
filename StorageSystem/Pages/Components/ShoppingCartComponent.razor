@@ -12,7 +12,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Components.Forms
 
-@if (products != null)
+@if (!cart.IsEmpty())
 {
             
             <table class="table table-striped table-hover ">
@@ -33,23 +33,23 @@
                         <th></th>
                     </tr>
                 </thead>
-                @foreach (var product in products)
+                @foreach (var shoppingCartProducts in cart.ShoppingCartProducts)
                 {
                     <tr>
                         <td>
-                            @product.Key.Name
+                            @shoppingCartProducts.Product.Name
                         </td>
                         <td>
-                            <img src="@product.Key.ImageLink" alt="" style="width:76px;height:76px;">
+                            <img src="@shoppingCartProducts.Product.ImageLink" alt="" style="width:76px;height:76px;">
                         </td>
                         <td>
-                            @product.Key.Price $
+                            @shoppingCartProducts.Product.Price $
                         </td>
                         <td>
-                            <input type="number" min="1" @bind="@quantityMap[product.Key]" @oninput="async (e) => await UpdateQuantity(product.Key, quantityMap[product.Key])" />
+                            <input type="number" min="1" @bind="@shoppingCartProducts.Quantity" @oninput="async (e) => await UpdateQuantity(shoppingCartProducts)" />
                         </td>
                         <td>
-                            <button type="button" class="btn btn-link" @onclick="() => RemoveProductFromCart(product.Key)">Remove From Cart</button>
+                            <button type="button" class="btn btn-link" @onclick="() => RemoveProductFromCart(shoppingCartProducts.Product)">Remove From Cart</button>
                         </td>
                     </tr>
                 }
@@ -74,8 +74,8 @@ else
 @code {
     private double? total = 0;
     private ShoppingCart cart;
-    private List<KeyValuePair<Product, int>> products;
-    private Dictionary<Product, int> quantityMap = new Dictionary<Product, int>();
+    //private List<KeyValuePair<Product, int>> products;
+    //private Dictionary<Product, int> quantityMap = new Dictionary<Product, int>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -91,18 +91,11 @@ else
         if (isLoggedIn)
         {
             cart = GetCartUseCase.Execute(UserManager.GetUserId(user));
-            var cartProducts = GetCartProductsUseCase.Execute();
-            cartProducts = cartProducts.Where(cp => cp.ShoppingCartId == cart.Id).ToList();
-            products = ViewProductsUseCase.ConvertCartProductsToProducts(cartProducts);
-            foreach (var product in products)
-            {
-                quantityMap[product.Key] = product.Value;
-            }
             CalculateTotal();
         }
         else
         {
-            products = null;
+            //products = new();
         }
     }
 
@@ -112,16 +105,11 @@ else
         await LoadCartData();
     }
 
-    private async Task UpdateQuantity(Product product, int quantity)
+    private async Task UpdateQuantity(ShoppingCartProduct shoppingCartProduct)
     {
-        var cartProduct = cart.CartProducts.Find(cp => cp.ProductId.Equals(product.ProductId));
-        if (cartProduct != null)
-        {
-            cartProduct.Quantity = quantity;
-            await AddProductToCartUseCase.UpdateProductQuantity(cart, cartProduct);
-            await LoadCartData();
-            CalculateTotal();
-        }
+        await AddProductToCartUseCase.UpdateProductQuantity(shoppingCartProduct);
+        await LoadCartData();
+        CalculateTotal();
     }
 
     private async Task<int> CreateAndSaveOrderAsync()
@@ -137,9 +125,9 @@ else
             var ongoingOrders = dbContext.Orders.Where(o => o.CustomerId == loggedInUser.Id && o.ShoppingCartId == cart.Id && o.Status == OrderStatusEnum.Pending).ToList();
             if (ongoingOrders.Any())
             {
-                return ongoingOrders.OrderByDescending(o => o.CreatedDate).First().OrderNumber; 
+                return ongoingOrders.OrderByDescending(o => o.CreatedDate).First().Id; 
             }
-            var newOrder = new Orders
+            var newOrder = new Order
                 {
                     CustomerId = loggedInUser.Id,
                     CustomerEmail = userEmail,
@@ -149,32 +137,32 @@ else
                     WorkerName = "",
                     WorkerPhoneNumber = "",
                     ShoppingCartId = cart.Id,
-                    Qty = products.Sum(p => p.Value),
-                    TotalPrice = products.Sum(p => p.Key.Price * p.Value),
-                    OrderedProductNames = string.Join(", ", products.Select(p => $"{p.Key.Name} x {p.Value}")),
+                    Qty = cart.ShoppingCartProducts.Sum(e => e.Quantity),
+                    TotalPrice = cart.ShoppingCartProducts.Select(scp => scp.Product).ToList().Sum(p => p.Price * p.Quantity),
+                    OrderedProductNames = "",
                     // Set other properties as needed
                 };
 
 
             // Set order items based on the current cart items
-            foreach (var product in products)
-            {
-                var orderItem = new Product
-                    {
-                        ProductId = product.Key.ProductId,
-                        Quantity = product.Value,
+            //foreach (var product in products)
+            //{
+            //    var orderItem = new Product
+            //        {
+            //            Id = product.Key.Id,
+            //            Quantity = product.Value,
 
-                        // Set other properties as needed
-                    };    
+            //            // Set other properties as needed
+            //        };    
 
-            }
+            //}
 
             // Add the new order to the Orders DbSet
             dbContext.Orders.Add(newOrder);
 
             // Save changes to the database
             await dbContext.SaveChangesAsync();
-            return newOrder.OrderNumber;
+            return newOrder.Id;
         }
         return 0;
     }
@@ -203,10 +191,15 @@ else
     private void CalculateTotal()
     {
         total = 0;
-        foreach (var product in products)
+
+        try
         {
-            total += product.Key.Price * quantityMap[product.Key];
+            @foreach (var shoppingCartProducts in cart.ShoppingCartProducts)
+            {
+                total += shoppingCartProducts.Product.Price * shoppingCartProducts.Quantity;
+            }
         }
+        catch {}
     } 
 
     private async Task ContinueOrder()

@@ -44,8 +44,8 @@
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         isLoggedIn = user.Identity.IsAuthenticated;
-        
-        if (isLoggedIn )
+
+        if (isLoggedIn)
         {
             cart = GetCartUseCase.Execute(UserManager.GetUserId(user));
         }

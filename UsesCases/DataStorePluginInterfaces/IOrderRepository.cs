@@ -9,11 +9,11 @@ namespace UseCases.DataStorePluginInterfaces
 {
     public interface IOrderRepository
     {
-        Task<int> AddOrderAsync(Orders order);
+        Task<int> AddOrderAsync(Order order);
         void DeleteOrder(int orderId);
-        Task<Orders> GetOrderAsync(int orderNumber);
-        Task<int> UpdateOrderAsync(Orders order);
-        Orders GetOrderByOrderNumber(int orderNumber);
-        Task<List<Orders>> GetOrdersByCustomerIdAsync(string customerId);
+        Task<Order> GetOrderAsync(int orderNumber);
+        Task<int> UpdateOrderAsync(Order order);
+        Order GetOrderByOrderNumber(int orderNumber);
+        Task<List<Order>> GetOrdersByCustomerIdAsync(string customerId);
     }
 }

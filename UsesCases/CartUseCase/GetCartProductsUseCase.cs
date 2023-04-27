@@ -13,13 +13,13 @@ namespace UseCases.CartUseCase
     public class GetCartProductsUseCase : IGetCartProductsUseCase
     {
         private readonly IShoppingCartRepository shoppingCartRepository;
-        
+
         public GetCartProductsUseCase(IShoppingCartRepository shoppingCartRepository)
         {
             this.shoppingCartRepository = shoppingCartRepository;
         }
 
-        public List<ShoppingCartProduct> Execute()
+        public List<Product> Execute()
         {
             return shoppingCartRepository.GetShoppingCartProducts();
         }

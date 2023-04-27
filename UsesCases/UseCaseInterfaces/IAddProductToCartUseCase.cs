@@ -6,6 +6,6 @@ namespace UseCases.UseCaseInterfaces
     {
         void Execute(ShoppingCart cart, Product product);
         void RemoveProductFromCart(ShoppingCart cart, Product product);
-        Task UpdateProductQuantity(ShoppingCart cart, ShoppingCartProduct cartProduct);
+        Task UpdateProductQuantity(ShoppingCartProduct shoppingCartProduct);
     }
 }

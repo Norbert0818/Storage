@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreBuisness
 {
@@ -7,27 +9,15 @@ namespace CoreBuisness
         [Key]
         public int Id { get; set; }
         public string? UserId { get; set; }
-        public List<ShoppingCartProduct> CartProducts { get; set; }
 
-        public ShoppingCart()
-        {
-            CartProducts = new List<ShoppingCartProduct>();
-        }
+        public Order? Order { get; set; }
+        public List<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new();
+
         public bool IsEmpty()
         {
-            return !this.CartProducts.Any();
+            return !ShoppingCartProducts.Any();
         }
     }
 
-    public class ShoppingCartProduct
-    {
-        [Key]
-        public int Id { get; set; }
-        public virtual ShoppingCart ShoppingCart { get; set; }
-        public int ShoppingCartId { get; set; }
-        public int ProductId { get; set; }
-        public int Quantity { get; set; }
-        public int? OrderId { get; set; }
-        public virtual Orders Order { get; set; }
-    }
+
 }

@@ -26,15 +26,15 @@
             @foreach (var product in products)
             {
                 <tr>
-                    <td>@GetCategoryByIdUseCase.Execute(product.CategoryId.Value)?.Name</td>
+                    <td>@GetCategoryByIdUseCase.Execute(product.CategoryId)?.Name</td>
                     <td>@product.Name</td>
                     <td>@(Math.Round(product.Price.Value, 2))</td>
                     <td>@product.Quantity</td>
                     <td>@product.ImageLink</td>
                     <td>
                         <button type="button" class="btn btn-link" @onclick="@(()=>OnEditProduct(product))">Edit</button>
-                        
-                        <button type="button" class="btn btn-link" @onclick="@(()=>OnDeleteProduct(product.ProductId))">Delete</button>
+
+                        <button type="button" class="btn btn-link" @onclick="@(()=>OnDeleteProduct(product.Id))">Delete</button>
                     </td>
                 </tr>
             }
@@ -63,7 +63,7 @@
 
     private void OnEditProduct(Product product)
     {
-        NavigationManager.NavigateTo($"/editproduct/{product.ProductId}");
+        NavigationManager.NavigateTo($"/editproduct/{product.Id}");
     }
 
     private void OnDeleteProduct(int productId)

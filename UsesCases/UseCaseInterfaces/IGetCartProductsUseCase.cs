@@ -5,6 +5,6 @@ namespace UseCases.UseCaseInterfaces
 {
     public interface IGetCartProductsUseCase
     {
-        List<ShoppingCartProduct> Execute();
+        List<Product> Execute();
     }
 }

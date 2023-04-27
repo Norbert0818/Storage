@@ -1,5 +1,6 @@
 ﻿using CoreBuisness;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,23 +20,35 @@ namespace Plugins.DataStore.MySQL
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Orders> Orders { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            /*
             modelBuilder.Entity<Category>()
                 .HasMany(c => c.Products)
                 .WithOne(p => p.Category)
                 .HasForeignKey(p => p.CategoryId);
             modelBuilder.Entity<ShoppingCart>()
-                .HasMany(c => c.CartProducts)
+                .HasMany(c => c.Products)
                 .WithOne(cp => cp.ShoppingCart)
                 .HasForeignKey(cp => cp.ShoppingCartId);
+            */
+            modelBuilder.Entity<ShoppingCartProduct>()
+                .HasKey(sc => new { sc.ShoppingCartId, sc.ProductId });
 
+            modelBuilder.Entity<ShoppingCartProduct>()
+                .HasOne(sc => sc.ShoppingCart)
+                .WithMany(s => s.ShoppingCartProducts)
+                .HasForeignKey(sc => sc.ShoppingCartId);
+
+            modelBuilder.Entity<ShoppingCartProduct>()
+                .HasOne(sc => sc.Product)
+                .WithMany(p => p.ShoppingCartProducts)
+                .HasForeignKey(sc => sc.ProductId);
         }
     }
 }

@@ -29,14 +29,14 @@ else
             @foreach (var order in orders)
             {
                 <tr>
-                    <td>@order.OrderNumber</td>
+                    <td>@order.Id</td>
                     <td>@order.OrderedProductNames</td>
                     <td>@order.TotalPrice $</td>
                     <td>@order.Status</td>
                     <td>
                         @if (order.Status == OrderStatusEnum.Pending)
                         {
-                            <button class="btn btn-danger" @onclick="(() => CancelOrder(order.OrderNumber))">Cancel</button>
+                            <button class="btn btn-danger" @onclick="(() => CancelOrder(order.Id))">Cancel</button>
                         }
                     </td>
                 </tr>
@@ -46,7 +46,7 @@ else
 }
 
 @code {
-    private List<Orders> orders;
+    private List<Order> orders;
 
     protected override async Task OnInitializedAsync()
     {

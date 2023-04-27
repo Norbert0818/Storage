@@ -1,4 +1,5 @@
 using CoreBuisness;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection.PortableExecutable;
 using UseCases.DataStorePluginInterfaces;
 
@@ -12,9 +13,9 @@ public class ShoppingCartRepository : IShoppingCartRepository
         this.db = db;
     }
 
-    public void AddProductToCart(ShoppingCart cart, Product product)
+    public void AddProductToCart(ShoppingCart shoppingCart, Product product)
     {
-        if (cart == null)
+        if (shoppingCart == null)
         {
             throw new ArgumentException("Cart must not be null.");
         }
@@ -22,27 +23,30 @@ public class ShoppingCartRepository : IShoppingCartRepository
         ShoppingCartProduct shoppingCartProduct = null;
         try
         {
-            shoppingCartProduct = cart.CartProducts.Find(cp => cp.ProductId.Equals(product.ProductId));
+            shoppingCartProduct = shoppingCart.ShoppingCartProducts.Find(scp => scp.ProductId == product.Id && scp.ShoppingCartId == shoppingCart.Id)!;
         }
-        catch (Exception e)
+        catch
         {
 
         }
         if (shoppingCartProduct != null)
         {
             shoppingCartProduct.Quantity += 1;
-            db.ShoppingCartProducts.Update(shoppingCartProduct);
         }
         else
         {
-            shoppingCartProduct = new ShoppingCartProduct();
-            shoppingCartProduct.ProductId = product.ProductId;
-            shoppingCartProduct.Quantity = 1;
-            cart.CartProducts.Add(shoppingCartProduct);
-            db.ShoppingCartProducts.Add(shoppingCartProduct);
+            shoppingCartProduct = new()
+            {
+                ShoppingCart = shoppingCart,
+                Product = product,
+                Quantity = 1
+            };
+
+            shoppingCart.ShoppingCartProducts.Add(shoppingCartProduct);
+            //db.ShoppingCartProducts.Add(shoppingCartProduct);
         }
-        
-        db.ShoppingCarts.Update(cart);
+
+        db.ShoppingCarts.Update(shoppingCart);
         db.SaveChanges();
     }
 
@@ -56,40 +60,37 @@ public class ShoppingCartRepository : IShoppingCartRepository
 
         }
 
-        return db.ShoppingCarts.Where(sc => sc.UserId == userId).FirstOrDefault();
+        return db.ShoppingCarts
+            .Where(sc => sc.UserId == userId)
+            .Include(sc => sc.ShoppingCartProducts)
+                .ThenInclude(scp => scp.Product)
+            .FirstOrDefault()!;
     }
 
-    public List<ShoppingCartProduct> GetShoppingCartProducts()
+    public List<Product> GetShoppingCartProducts()
     {
-        return db.ShoppingCartProducts.ToList();
+        return db.Products.ToList();
     }
 
-    public void RemoveProductFromCart(ShoppingCart cart, Product product)
+    public void RemoveProductFromCart(ShoppingCart shoppingCart, Product product)
     {
-        if (cart == null)
+        if (shoppingCart == null)
         {
             throw new ArgumentException("Cart must not be null.");
         }
 
-        var shoppingCartProduct = cart.CartProducts.Find(cp => cp.ProductId.Equals(product.ProductId));
+        var shoppingCartProduct = shoppingCart.ShoppingCartProducts.Find(scp => scp.ProductId == product.Id && scp.ShoppingCartId == shoppingCart.Id);
         if (shoppingCartProduct != null)
         {
-            cart.CartProducts.Remove(shoppingCartProduct);
-            db.ShoppingCartProducts.Remove(shoppingCartProduct);
-            db.ShoppingCarts.Update(cart);
+            shoppingCart.ShoppingCartProducts.Remove(shoppingCartProduct);
+            db.ShoppingCarts.Update(shoppingCart);
             db.SaveChanges();
         }
     }
 
-    public async Task UpdateProductQuantity(ShoppingCart cart, ShoppingCartProduct cartProduct)
+    public async Task UpdateProductQuantity(ShoppingCartProduct shoppingCartProduct)
     {
-        var shoppingCartProduct = db.ShoppingCartProducts.FirstOrDefault(cp => cp.Id == cartProduct.Id);
-        if (shoppingCartProduct != null)
-        {
-            shoppingCartProduct.Quantity = cartProduct.Quantity;
-            db.ShoppingCartProducts.Update(shoppingCartProduct);
-            db.ShoppingCarts.Update(cart);
-            await db.SaveChangesAsync();
-        }
+        db.ShoppingCartProducts.Update(shoppingCartProduct);
+        await db.SaveChangesAsync();
     }
 }

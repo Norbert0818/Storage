@@ -26,9 +26,9 @@ namespace UseCases.CartUseCase
         {
             shoppingCartRepository.RemoveProductFromCart(cart, product);
         }
-        public async Task UpdateProductQuantity(ShoppingCart cart, ShoppingCartProduct cartProduct)
+        public async Task UpdateProductQuantity(ShoppingCartProduct shoppingCartProduct)
         {
-            await shoppingCartRepository.UpdateProductQuantity(cart, cartProduct);
+            await shoppingCartRepository.UpdateProductQuantity(shoppingCartProduct);
         }
 
     }

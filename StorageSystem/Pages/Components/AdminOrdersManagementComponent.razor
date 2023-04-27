@@ -28,7 +28,7 @@ else
             @foreach (var order in allOrders)
             {
                 <tr>
-                    <td>@order.OrderNumber</td>
+                    <td>@order.Id</td>
                     <td>@order.CustomerName</td>
                     <td>@order.OrderedProductNames</td>
                     <td>@order.DeliveryDay.ToShortDateString()</td>
@@ -51,13 +51,13 @@ else
 }
 
 @code {
-    private List<Orders> allOrders;
+    private List<Order> allOrders;
 
     protected override async Task OnInitializedAsync()
     {
         allOrders = await dbContext.Orders.ToListAsync();
     }
-    private async Task UpdateOrderStatus(Orders order, OrderStatusEnum status)
+    private async Task UpdateOrderStatus(Order order, OrderStatusEnum status)
     {
         order.Status = status;
         dbContext.Orders.Update(order);

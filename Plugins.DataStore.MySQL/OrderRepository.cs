@@ -18,7 +18,7 @@ namespace Plugins.DataStore.MySQL
             _dbContext = dbContext;
         }
 
-        public async Task<int> AddOrderAsync(Orders order)
+        public async Task<int> AddOrderAsync(Order order)
         {
             _dbContext.Orders.Add(order);
             return await _dbContext.SaveChangesAsync();
@@ -30,25 +30,32 @@ namespace Plugins.DataStore.MySQL
             _dbContext.Orders.Remove(order);
             _dbContext.SaveChanges();
         }
-        public async Task<Orders> GetOrderAsync(int orderNumber)
+        public async Task<Order> GetOrderAsync(int orderNumber)
         {
-            return await _dbContext.Orders.FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
+            return await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderNumber);
         }
-        public async Task<int> UpdateOrderAsync(Orders order)
+        public async Task<int> UpdateOrderAsync(Order order)
         {
+            foreach (ShoppingCartProduct shoppingCartProduct in order.ShoppingCart!.ShoppingCartProducts)
+            {
+                Product product = _dbContext.Products.FirstOrDefault(p => p.Id == shoppingCartProduct.ProductId)!;
+                product.Quantity -= shoppingCartProduct.Quantity;
+            }
             _dbContext.Orders.Update(order);
             return await _dbContext.SaveChangesAsync();
         }
 
-        public Orders GetOrderByOrderNumber(int orderNumber)
+        public Order GetOrderByOrderNumber(int orderNumber)
         {
-            return _dbContext.Orders.FirstOrDefault(o => o.OrderNumber == orderNumber);
+            return _dbContext.Orders.FirstOrDefault(o => o.Id == orderNumber);
         }
 
-        public async Task<List<Orders>> GetOrdersByCustomerIdAsync(string customerId)
+        public async Task<List<Order>> GetOrdersByCustomerIdAsync(string customerId)
         {
             return await _dbContext.Orders
-                .Include(o => o.OrderItems)
+                .Include(o => o.ShoppingCart)
+                    .ThenInclude(s => s!.ShoppingCartProducts)
+                        .ThenInclude(p => p.Product)
                 .Where(o => o.CustomerId == customerId)
                 .ToListAsync();
         }
