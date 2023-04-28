@@ -52,6 +52,13 @@ public class ShoppingCartRepository : IShoppingCartRepository
 
     public ShoppingCart GetShoppingCartForUser(string userId)
     {
+
+        //ShoppingCart pendingCart = db.ShoppingCarts
+        //    .Where(sc => sc.UserId == userId && sc.Order.Status == OrderStatusEnum.Pending)
+        //    .Include(sc => sc.ShoppingCartProducts)
+        //        .ThenInclude(scp => scp.Product)
+        //    .FirstOrDefault()!;
+
         if (userId == null)
         {
             ShoppingCart shoppingCart = new ShoppingCart();
@@ -59,6 +66,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
             return shoppingCart;
 
         }
+
 
         return db.ShoppingCarts
             .Where(sc => sc.UserId == userId)

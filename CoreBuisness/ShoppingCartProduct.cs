@@ -10,6 +10,7 @@ namespace CoreBuisness
 {
     public class ShoppingCartProduct
     {
+        [Key]
         public int ShoppingCartId { get; set; }
         public ShoppingCart ShoppingCart { get; set; } = null!;
         public int ProductId { get; set; }

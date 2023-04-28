@@ -21,6 +21,7 @@ namespace CoreBuisness
         [Required(ErrorMessage = "Phone number is required")]
         public string CustomerPhoneNumber { get; set; } = null!;
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public string? WorkerId { get; set; }
         public string? WorkerName { get; set; }
         public string? WorkerPhoneNumber { get; set; }
         public double Qty { get; set; }
@@ -38,7 +39,5 @@ namespace CoreBuisness
         public string? OrderedProductNames { get; set; }
         [ForeignKey("ShoppingCartId")]
         public ShoppingCart? ShoppingCart { get; set; }
-        //public ICollection<WorkerTask> Tasks { get; set; } = new List<WorkerTask>();
-        //public ICollection<ShoppingCartProduct> OrderItems { get; set; } = new List<ShoppingCartProduct>();
     }
 }

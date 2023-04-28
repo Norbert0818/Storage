@@ -29,6 +29,7 @@ else
                 <th>Status</th>
                 <th>Actions</th>
                 <th>Add Task</th>
+                <th>Inputs</th>
             </tr>
         </thead>
         <tbody>
@@ -60,7 +61,13 @@ else
                                 <option value="@employee.Id">@employee.UserName</option>
                             }
                         </select>
-                        <button class="btn btn-primary" @onclick="() => AssignTaskToWorker(order, selectedWorker)">Assign</button>
+                        <button class="btn btn-primary" @onclick="() => AssignOrderToEmployeeAsync(order, selectedWorker)">Assign</button>
+                    </td>
+                    <td>
+                        <label for="workername">Worker Name</label>
+                        <input type="text" name="workername" id="workername" @bind-value="order.WorkerName">
+                        <label for="workerphonenumber">Worker Phonenumber</label>
+                        <input tpye="text" name="workerphonenumber" id="workerphonenumber" @bind-value="order.WorkerPhoneNumber">
                     </td>
                 </tr>
                 
@@ -94,21 +101,16 @@ else
         dbContext.Orders.Update(order);
         await dbContext.SaveChangesAsync();
     }
-
-    private async Task AssignTaskToWorker(Order order, string workerId)
+   
+    private async Task AssignOrderToEmployeeAsync(Order order, string userId)
     {
-        if (string.IsNullOrEmpty(workerId)) return;
-
-        var newTask = new WorkerTask
-            {
-                OrderId = order.Id,
-                WorkerId = workerId,
-                Description = $"Process order {order.Id}",
-                AssignedDate = DateTime.Now,
-                IsCompleted = false
-            };
-
-        dbContext.WorkerTasks.Add(newTask);
-        await dbContext.SaveChangesAsync();
+        if (!string.IsNullOrEmpty(userId))
+        {
+            order.WorkerId = userId;
+            
+            dbContext.Orders.Update(order);
+            await dbContext.SaveChangesAsync();
+        }
     }
+    
 }

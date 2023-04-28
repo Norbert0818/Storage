@@ -21,8 +21,11 @@ else
                 <th>Order Number</th>
                 <th>Products</th>
                 <th>Total Price</th>
+                <th>Worker Name</th>
+                <th>Worker Phone Number</th>
                 <th>Status</th>
                 <th>Actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -32,6 +35,8 @@ else
                     <td>@order.Id</td>
                     <td>@order.OrderedProductNames</td>
                     <td>@order.TotalPrice $</td>
+                    <td>@order.WorkerName</td>
+                    <td>@order.WorkerPhoneNumber</td>
                     <td>@order.Status</td>
                     <td>
                         @if (order.Status == OrderStatusEnum.Pending)

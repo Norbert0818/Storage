@@ -1,4 +1,5 @@
 ﻿using CoreBuisness.User;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,8 +22,5 @@ namespace CoreBuisness
 
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
-
-        [ForeignKey("WorkerId")]
-        public Worker Worker { get; set; }
     }
 }

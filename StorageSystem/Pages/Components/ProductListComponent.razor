@@ -56,10 +56,7 @@
 
         products = ViewProductsUseCase.Execute();
     }
-    //private async Task OnClickAddProduct(Product product)
-    //{
-    //    await Task.Run(() => AddProductToCartUseCase.Execute(cart, product));
-    //}
+   
     private async Task OnClickAddProduct(Product product)
     {
         if (cart == null)

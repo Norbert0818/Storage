@@ -70,8 +70,7 @@ else
 @code {
     private double? total = 0;
     private ShoppingCart cart;
-    //private List<KeyValuePair<Product, int>> products;
-    //private Dictionary<Product, int> quantityMap = new Dictionary<Product, int>();
+    private double? discount = 1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -118,10 +117,13 @@ else
             var loggedInUser = await UserManager.GetUserAsync(user);
             var userEmail = loggedInUser.Email;
 
-            var ongoingOrders = dbContext.Orders.Where(o => o.CustomerId == loggedInUser.Id && o.ShoppingCartId == cart.Id && o.Status == OrderStatusEnum.Pending).ToList();
-            if (ongoingOrders.Any())
+            var ongoingOrders = dbContext.Orders.Where(o => o.CustomerId == loggedInUser.Id && o.ShoppingCartId == cart.Id && o.Status == OrderStatusEnum.Pending)
+            .OrderByDescending(o => o.CreatedDate)
+            .FirstOrDefault();
+
+            if (ongoingOrders != null)
             {
-                return ongoingOrders.OrderByDescending(o => o.CreatedDate).First().Id; 
+                return ongoingOrders.Id;
             }
             var newOrder = new Order
                 {
@@ -138,20 +140,6 @@ else
                     OrderedProductNames = string.Join(", ", cart.ShoppingCartProducts.Select(p => $"{p.Product.Name} x {p.Quantity}")),
                     // Set other properties as needed
                 };
-
-
-            // Set order items based on the current cart items
-            //foreach (var product in products)
-            //{
-            //    var orderItem = new Product
-            //        {
-            //            Id = product.Key.Id,
-            //            Quantity = product.Value,
-
-            //            // Set other properties as needed
-            //        };    
-
-            //}
 
             // Add the new order to the Orders DbSet
             dbContext.Orders.Add(newOrder);
@@ -187,15 +175,33 @@ else
     private void CalculateTotal()
     {
         total = 0;
+        var quantitySzam = 0;
 
         try
         {
             @foreach (var shoppingCartProducts in cart.ShoppingCartProducts)
             {
                 total += shoppingCartProducts.Product.Price * shoppingCartProducts.Quantity;
+                quantitySzam += shoppingCartProducts.Quantity;
             }
         }
         catch {}
+
+        if(quantitySzam >= 100)
+        {
+            discount = 0.9;
+        }
+        else if ( quantitySzam >= 250)
+        {
+            discount = 0.87;
+        }
+        else if(quantitySzam >= 500)
+        {
+            discount = 0.85;
+        }
+
+        total= total * discount;
+
     } 
 
     private async Task ContinueOrder()
