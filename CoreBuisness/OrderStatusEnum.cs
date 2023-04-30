@@ -10,6 +10,7 @@ namespace CoreBuisness
     {
         Pending,
         Confirmed,
-        Declined
+        Declined,
+        Done
     }
 }

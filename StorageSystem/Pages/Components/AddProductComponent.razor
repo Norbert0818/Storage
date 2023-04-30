@@ -37,7 +37,7 @@
 
         <div class="form-group">
             <label for="qty">Quantity</label>
-            <InputNumber id="qty" @bind-Value="product.Quantity" class="form-control"></InputNumber>
+            <InputNumber id="qty" @bind-Value="product.MaxQuantity" class="form-control"></InputNumber>
         </div>
         <div class="form-group">
             <label for="product-image">Image Link</label>
@@ -70,6 +70,7 @@
 
     private void OnValidSumit()
     {
+        product.Quantity = product.MaxQuantity;
         AddProductUseCase.Execute(product);
         NavigationManager.NavigateTo("/editingproducts");
     }

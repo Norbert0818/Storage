@@ -4,9 +4,14 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:DatabaseContextConnection"
     },
+    "signalr1": {
+      "type": "signalr",
+      "connectionId": "Azure:SignalR:ConnectionString",
+      "dynamicId": null
+    },
     "mssql2": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:AccountContextConnection"
+      "connectionId": "ConnectionStrings:Connection"
     }
   }
 }

@@ -128,6 +128,9 @@ namespace Plugins.DataStore.MySQL.Migrations
                     b.Property<string>("ImageLink")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("MaxQuantity")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");

@@ -6,6 +6,8 @@
 @inject IGetProductByIdUseCase GetProductByIdUseCase
 @inject IEditProductUseCase EditProductUseCase
 @inject IViewCategoriesUseCase ViewCategoriesUseCase
+@using Plugins.DataStore.MySQL
+@inject DataContext dbContext
 
 <h3>Edit Product</h3>
 <br />
@@ -38,7 +40,7 @@
 
         <div class="form-group">
             <label for="qty">Quantity</label>
-            <InputNumber id="qty" @bind-Value="product.Quantity" class="form-control"></InputNumber>
+            <InputNumber id="qty" @bind-Value="product.MaxQuantity" class="form-control"></InputNumber>
         </div>
 
         <div class="form-group">
@@ -84,7 +86,7 @@
                     Name = prod.Name,
                     CategoryId = prod.CategoryId,
                     Price = prod.Price,
-                    Quantity = prod.Quantity,
+                    MaxQuantity = prod.MaxQuantity,
                     ImageLink = prod.ImageLink,
                     Description = prod.Description
                 };
@@ -93,6 +95,9 @@
 
     private void OnValidSumit()
     {
+        var currentMaxCapacity = dbContext.Products.Where(p => p.Id == product.Id).Select(p => p.MaxQuantity).FirstOrDefault();
+        product.Quantity = product.MaxQuantity - currentMaxCapacity;
+           
         EditProductUseCase.Execute(this.product);
         NavigationManager.NavigateTo("/editingproducts");
     }

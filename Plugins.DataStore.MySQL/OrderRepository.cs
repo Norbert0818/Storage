@@ -39,7 +39,7 @@ namespace Plugins.DataStore.MySQL
             foreach (ShoppingCartProduct shoppingCartProduct in order.ShoppingCart!.ShoppingCartProducts)
             {
                 Product product = _dbContext.Products.FirstOrDefault(p => p.Id == shoppingCartProduct.ProductId)!;
-                product.Quantity -= shoppingCartProduct.Quantity;
+                //product.Quantity -= shoppingCartProduct.Quantity;
             }
             _dbContext.Orders.Update(order);
             return await _dbContext.SaveChangesAsync();

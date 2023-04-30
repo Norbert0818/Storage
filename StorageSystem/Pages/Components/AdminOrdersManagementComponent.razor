@@ -7,6 +7,7 @@
 @inject UserManager<IdentityUser> UserManager
 @inject RoleManager<IdentityRole> RoleManager
 @inject AccountContext AccountContext
+@inject DataContext dbContext
 
 
 
@@ -45,7 +46,7 @@ else
                     <td>@order.TotalPrice $</td>
                     <td>@order.Status</td>
                     <td>
-                        @if (order.Status != OrderStatusEnum.Confirmed && order.Status != OrderStatusEnum.Declined)
+                        @if (order.Status != OrderStatusEnum.Confirmed && order.Status != OrderStatusEnum.Declined && order.Status != OrderStatusEnum.Done)
                         {
                             <button class="btn btn-success" @onclick="() => UpdateOrderStatus(order, OrderStatusEnum.Confirmed)">Confirm</button>
                             <button class="btn btn-danger" @onclick="() => UpdateOrderStatus(order, OrderStatusEnum.Declined)">Decline</button>
@@ -53,22 +54,27 @@ else
                         }
                         
                     </td>
-                    <td>
-                        <select @bind="selectedWorker" class="form-select">
-                            <option value="">Select an employee</option>
-                            @foreach (var employee in employees)
-                            {
-                                <option value="@employee.Id">@employee.UserName</option>
-                            }
-                        </select>
-                        <button class="btn btn-primary" @onclick="() => AssignOrderToEmployeeAsync(order, selectedWorker)">Assign</button>
-                    </td>
-                    <td>
-                        <label for="workername">Worker Name</label>
-                        <input type="text" name="workername" id="workername" @bind-value="order.WorkerName">
-                        <label for="workerphonenumber">Worker Phonenumber</label>
-                        <input tpye="text" name="workerphonenumber" id="workerphonenumber" @bind-value="order.WorkerPhoneNumber">
-                    </td>
+                    @if (order.Status != OrderStatusEnum.Confirmed && order.Status != OrderStatusEnum.Declined && order.Status != OrderStatusEnum.Done)
+                    {
+                        <td>
+                            <select @bind="selectedWorker" class="form-select">
+                                <option value="">Select an employee</option>
+                                @foreach (var employee in employees)
+                                {
+                                    <option value="@employee.Id">@employee.UserName</option>
+                                }
+                            </select>
+                            <button class="btn btn-primary" @onclick="() => AssignOrderToEmployeeAsync(order, selectedWorker)">Assign</button>
+                        </td>
+                        <td>
+                            <label for="workername">Worker Name</label>
+                            <input type="text" name="workername" id="workername" @bind-value="order.WorkerName">
+                            <label for="workerphonenumber">Worker Phonenumber</label>
+                            <input tpye="text" name="workerphonenumber" id="workerphonenumber" @bind-value="order.WorkerPhoneNumber">
+                        </td>
+
+                    }
+                    
                 </tr>
                 
             }
@@ -97,6 +103,26 @@ else
 
     private async Task UpdateOrderStatus(Order order, OrderStatusEnum status)
     {
+        if(status == OrderStatusEnum.Confirmed)
+        {
+            Dictionary<Product, int> productQuantities = new Dictionary<Product, int>();
+
+            ShoppingCart shoppingCart = dbContext.ShoppingCarts.Where(sp => sp.Id == order.ShoppingCartId).FirstOrDefault();
+            List<ShoppingCartProduct> shoppingCartProduct = dbContext.ShoppingCartProducts.Where(scp => scp.ShoppingCartId == shoppingCart.Id).ToList();
+
+            foreach (var product in shoppingCartProduct)
+            {
+                var matchingProduct = dbContext.Products.Where(p => p.Id == product.ProductId).FirstOrDefault();
+                if (matchingProduct != null)
+                {
+                    productQuantities.Add(matchingProduct, product.Quantity);
+                    matchingProduct.Quantity -= product.Quantity;
+                    dbContext.SaveChanges();
+                }
+            }
+
+        }
+        
         order.Status = status;
         dbContext.Orders.Update(order);
         await dbContext.SaveChangesAsync();

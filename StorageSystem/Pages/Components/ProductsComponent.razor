@@ -17,7 +17,8 @@
                 <th>Product Category</th>
                 <th>Product Name</th>
                 <th>Price</th>
-                <th>Quantity</th>
+                <th>Actually Available</th>
+                <th>Max Quantity</th>
                 <th>Image</th>
                 <th></th>
             </tr>
@@ -30,6 +31,7 @@
                     <td>@product.Name</td>
                     <td>@(Math.Round(product.Price.Value, 2))</td>
                     <td>@product.Quantity</td>
+                    <td>@product.MaxQuantity</td>
                     <td>@product.ImageLink</td>
                     <td>
                         <button type="button" class="btn btn-link" @onclick="@(()=>OnEditProduct(product))">Edit</button>

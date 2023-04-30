@@ -28,6 +28,7 @@ builder.Services.AddDbContext<DataContext>(options =>
   options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
 
 
+
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddRoles<IdentityRole>()
 //    .AddEntityFrameworkStores<AccountContext>();

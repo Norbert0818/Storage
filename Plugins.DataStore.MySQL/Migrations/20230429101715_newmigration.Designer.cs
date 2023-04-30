@@ -11,7 +11,7 @@ using Plugins.DataStore.MySQL;
 namespace Plugins.DataStore.MySQL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230428131127_newmigration")]
+    [Migration("20230429101715_newmigration")]
     partial class newmigration
     {
         /// <inheritdoc />
@@ -130,6 +130,9 @@ namespace Plugins.DataStore.MySQL.Migrations
 
                     b.Property<string>("ImageLink")
                         .HasColumnType("longtext");
+
+                    b.Property<int>("MaxQuantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

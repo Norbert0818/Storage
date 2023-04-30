@@ -25,12 +25,13 @@ else
                 <th>Delivery Day</th>
                 <th>Pickup Day</th>
                 <th>Adress</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var task in assignedTasks)
             {
-                @if (task.Status.ToString() == "Confirmed")
+                @if (task.Status.ToString() == "Confirmed" || task.Status.ToString() =="Done")
                 {
                     <tr>
                         <td>@task.Id</td>
@@ -40,6 +41,10 @@ else
                         <td>@task.DeliveryDay.ToShortDateString()</td>
                         <td>@task.PickupDay.ToShortDateString()</td>
                         <td>@task.Address</td>
+                        @if(task.Status .ToString() == "Confirmed")
+                        {
+                            <td><button class="btn btn-success" @onclick="() => UpdateOrderStatus(task, OrderStatusEnum.Done)">Done</button></td>
+                        }
                     </tr>
                 }
             }
@@ -52,6 +57,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        assignedTasks =  await dbContext.Orders.ToListAsync();
         await LoadAssignedTasks();
     }
 
@@ -64,4 +70,30 @@ else
             .Where(o => o.WorkerId == currentUser.Id)
             .ToListAsync();
     }
+
+    private async Task UpdateOrderStatus(Order order, OrderStatusEnum status)
+    {
+         if (status == OrderStatusEnum.Done )
+        {
+            Dictionary<Product, int> productQuantities = new Dictionary<Product, int>();
+
+            ShoppingCart shoppingCart = dbContext.ShoppingCarts.Where(sp => sp.Id == order.ShoppingCartId).FirstOrDefault();
+            List<ShoppingCartProduct> shoppingCartProduct = dbContext.ShoppingCartProducts.Where(scp => scp.ShoppingCartId == shoppingCart.Id).ToList();
+
+            foreach (var product in shoppingCartProduct)
+            {
+                var matchingProduct = dbContext.Products.Where(p => p.Id == product.ProductId).FirstOrDefault();
+                if (matchingProduct != null)
+                {
+                    productQuantities.Add(matchingProduct, product.Quantity);
+                    matchingProduct.Quantity += product.Quantity;
+                    dbContext.SaveChanges();
+                }
+            }
+        }
+        order.Status = status;
+        dbContext.Orders.Update(order);
+        await dbContext.SaveChangesAsync();
+    }
+    
 }

@@ -16,8 +16,9 @@ namespace CoreBuisness
         public int CategoryId { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
         public int Quantity { get; set; }
+        [Required]
+        public int MaxQuantity { get; set; }
         [Required]
         public double? Price { get; set; }
         public string? ImageLink { get; set; }
