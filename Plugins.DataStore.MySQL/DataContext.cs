@@ -21,7 +21,6 @@ namespace Plugins.DataStore.MySQL
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
         public DbSet<WorkerTask> WorkerTasks { get; set; }

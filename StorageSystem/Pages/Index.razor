@@ -1,8 +1,18 @@
 ﻿@page "/"
-@attribute [Authorize(Roles = "Admin")]
-<PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Falcon!</h1>
+    <p class="lead">Find the perfect chairs and other items for your special event. We offer a wide selection to suit any occasion, including weddings, conferences, and parties.</p>
+    <hr class="my-4">
+    <p>Click the button below to browse our collection and rent the items you need for your event.</p>
+    <button class="btn btn-primary btn-lg" @onclick="NavigateToItemsPage">Browse Collection</button>
+</div>
 
-Welcome to your new app.
+@code {
+    @inject NavigationManager NavigationManager
 
+    private void NavigateToItemsPage()
+    {
+        NavigationManager.NavigateTo("/products");
+    }
+}
