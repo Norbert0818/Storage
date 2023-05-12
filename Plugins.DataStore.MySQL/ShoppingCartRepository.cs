@@ -8,6 +8,7 @@ namespace Plugins.DataStore.MySQL;
 public class ShoppingCartRepository : IShoppingCartRepository
 {
     private readonly DataContext db;
+
     public ShoppingCartRepository(DataContext db)
     {
         this.db = db;
@@ -50,7 +51,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
         db.SaveChanges();
     }
 
-    public ShoppingCart GetShoppingCartForUser(string userId)
+    public ShoppingCart GetShoppingCartForUser(string? userId, string? anonId = null)
     {
 
         //ShoppingCart pendingCart = db.ShoppingCarts
@@ -59,20 +60,45 @@ public class ShoppingCartRepository : IShoppingCartRepository
         //        .ThenInclude(scp => scp.Product)
         //    .FirstOrDefault()!;
 
-        if (userId == null)
-        {
-            ShoppingCart shoppingCart = new ShoppingCart();
-            db.ShoppingCarts.Add(shoppingCart);
-            return shoppingCart;
-
-        }
 
 
-        return db.ShoppingCarts
-            .Where(sc => sc.UserId == userId)
+        ShoppingCart? shoppingCart2 = db.ShoppingCarts
+            .Where(sc => sc.UserId == userId || sc.AnonId == anonId)
+            .Where(sc => sc.Order == null)
+            .Include(sc => sc.Order)
             .Include(sc => sc.ShoppingCartProducts)
                 .ThenInclude(scp => scp.Product)
-            .FirstOrDefault()!;
+            .OrderBy(sp => sp.Id)
+            .LastOrDefault()!;
+
+        if (shoppingCart2 == null)
+        {
+            if (userId == null)
+            {
+                ShoppingCart shoppingCart = new ShoppingCart()
+                {
+                    AnonId = anonId
+                };
+                db.ShoppingCarts.Add(shoppingCart);
+                db.SaveChanges();
+                return shoppingCart;
+
+            }
+            else
+            {
+                ShoppingCart shoppingCart3 = new ShoppingCart()
+                {
+                    UserId = userId
+                };
+                db.ShoppingCarts.Add(shoppingCart3);
+                db.SaveChanges();
+                return shoppingCart3;
+            }
+        }
+        else
+        {
+            return shoppingCart2;
+        }
     }
 
     public List<Product> GetShoppingCartProducts()

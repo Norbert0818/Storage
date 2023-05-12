@@ -1,4 +1,5 @@
 ﻿
+@using CoreBuisness.User;
 @using Plugins.DataStore.MySQL
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Components.Forms
@@ -21,26 +22,26 @@
 
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public AuthenticationStateProvider AuthStateProvider { get; set; }
-    [Inject] public UserManager<IdentityUser> UserManager { get; set; }
+    [Inject] public UserManager<AppUser> UserManager { get; set; }
     [Inject] public DataContext DbContext { get; set; }
 
     private async Task NavigateToCart()
     {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
+        //var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        //var user = authState.User;
 
-        if (user.Identity.IsAuthenticated)
-        {
-            var userId = UserManager.GetUserId(user);
-            var userCart = DbContext.ShoppingCarts.FirstOrDefault(c => c.UserId == userId);
+        //if (user.Identity.IsAuthenticated)
+        //{
+        //    var userId = UserManager.GetUserId(user);
+        //    var userCart = DbContext.ShoppingCarts.FirstOrDefault(c => c.UserId == userId);
 
-            if (userCart == null)
-            {
-                userCart = new ShoppingCart { UserId = userId };
-                DbContext.ShoppingCarts.Add(userCart);
-                await DbContext.SaveChangesAsync();
-            }
-        }
+        //    if (userCart == null)
+        //    {
+        //        userCart = new ShoppingCart { UserId = userId };
+        //        DbContext.ShoppingCarts.Add(userCart);
+        //        await DbContext.SaveChangesAsync();
+        //    }
+        //}
 
         NavigationManager.NavigateTo("/cart");
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CoreBuisness.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace StorageSystem.Services
@@ -6,9 +7,9 @@ namespace StorageSystem.Services
     public class RoleService : IRoleService
     {
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public RoleService(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public RoleService(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -29,17 +30,17 @@ namespace StorageSystem.Services
             return new List<IdentityRole>(await _roleManager.Roles.ToListAsync());
         }
 
-        public async Task<List<IdentityUser>> GetUsersInRoleAsync(string roleName)
+        public async Task<List<AppUser>> GetUsersInRoleAsync(string roleName)
         {
-            return new List<IdentityUser>(await _userManager.GetUsersInRoleAsync(roleName));
+            return new List<AppUser>(await _userManager.GetUsersInRoleAsync(roleName));
         }
 
-        public async Task<IdentityResult> AddUserToRoleAsync(IdentityUser user, string roleName)
+        public async Task<IdentityResult> AddUserToRoleAsync(AppUser user, string roleName)
         {
             return await _userManager.AddToRoleAsync(user, roleName);
         }
 
-        public async Task<IdentityResult> RemoveUserFromRoleAsync(IdentityUser user, string roleName)
+        public async Task<IdentityResult> RemoveUserFromRoleAsync(AppUser user, string roleName)
         {
             return await _userManager.RemoveFromRoleAsync(user, roleName);
         }

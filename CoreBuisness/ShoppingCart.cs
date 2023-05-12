@@ -1,3 +1,4 @@
+using CoreBuisness.User;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,10 @@ namespace CoreBuisness
         [Key]
         public int Id { get; set; }
         public string? UserId { get; set; }
+        public string? AnonId { get; set; }
 
+        [ForeignKey("UserId")]
+        public AppUser? User { get; set; }
         public Order? Order { get; set; }
         public List<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new();
 
@@ -17,6 +21,8 @@ namespace CoreBuisness
         {
             return !ShoppingCartProducts.Any();
         }
+
+        //public readonly static string ClientId = Guid.NewGuid().ToString();
     }
 
 

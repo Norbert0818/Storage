@@ -1,4 +1,5 @@
 ﻿using CoreBuisness;
+using CoreBuisness.User;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace UseCases
             this.userRepository = userRepository;
         }
 
-        public IEnumerable<IdentityUser> Execute()
+        public IEnumerable<AppUser> Execute()
         {
             return userRepository.GetUsers();
         }

@@ -3,8 +3,9 @@
 @using Microsoft.AspNetCore.Identity
 @using System.ComponentModel.DataAnnotations
 @using StorageSystem.Services;
+@using CoreBuisness.User;
 @inject RoleManager<IdentityRole> RoleManager
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<AppUser> UserManager
 @inject IRoleService RoleService
 
 <h3>Role Manager</h3>

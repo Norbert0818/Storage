@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CoreBuisness.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace StorageSystem.Services
 {
@@ -6,9 +7,9 @@ namespace StorageSystem.Services
     {
         Task<IdentityResult> CreateRoleAsync(string roleName);
         Task<List<IdentityRole>> GetAllRolesAsync();
-        Task<List<IdentityUser>> GetUsersInRoleAsync(string roleName);
-        Task<IdentityResult> AddUserToRoleAsync(IdentityUser user, string roleName);
-        Task<IdentityResult> RemoveUserFromRoleAsync(IdentityUser user, string roleName);
+        Task<List<AppUser>> GetUsersInRoleAsync(string roleName);
+        Task<IdentityResult> AddUserToRoleAsync(AppUser user, string roleName);
+        Task<IdentityResult> RemoveUserFromRoleAsync(AppUser user, string roleName);
         Task<IdentityResult> DeleteRoleAsync(IdentityRole role);
 
     }

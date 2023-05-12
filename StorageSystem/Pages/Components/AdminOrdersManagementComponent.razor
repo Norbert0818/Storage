@@ -4,10 +4,11 @@
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Identity
 @using CoreBuisness.User
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<AppUser> UserManager
 @inject RoleManager<IdentityRole> RoleManager
-@inject AccountContext AccountContext
+@inject DataContext AccountContext
 @inject DataContext dbContext
+@using CoreBuisness.User;
 
 
 
@@ -87,15 +88,15 @@ else
     private List<Order> allOrders;
     private string selectedWorker;
 
-    private IList<IdentityUser> employees;
+    private IList<AppUser> employees;
 
     protected override async Task OnInitializedAsync()
     {
         allOrders = await dbContext.Orders.ToListAsync();
-        employees = (List<IdentityUser>)await GetUsersInEmployeeRole();
+        employees = (List<AppUser>)await GetUsersInEmployeeRole();
     }
 
-    private async Task<IList<IdentityUser>> GetUsersInEmployeeRole()
+    private async Task<IList<AppUser>> GetUsersInEmployeeRole()
     {
         var usersInRole = await UserManager.GetUsersInRoleAsync("Employee");
         return usersInRole;

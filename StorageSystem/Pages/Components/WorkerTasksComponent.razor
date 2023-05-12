@@ -1,12 +1,13 @@
 ﻿@page "/tasks"
+@using CoreBuisness.User;
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
 @using Plugins.DataStore.MySQL
 @using Microsoft.AspNetCore.Components.Authorization
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataContext dbContext
-@inject UserManager<IdentityUser> UserManager
-@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
 
 
 @if (assignedTasks == null)

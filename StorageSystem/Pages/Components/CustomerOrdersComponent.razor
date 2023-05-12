@@ -1,11 +1,12 @@
 ﻿@page "/orders"
 
 @inject IOrderRepository OrderRepository
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<AppUser> UserManager
 @inject AuthenticationStateProvider AuthStateProvider
 @using Microsoft.AspNetCore.Identity
 @using Plugins.DataStore.MySQL
 @using UseCases.DataStorePluginInterfaces
+@using CoreBuisness.User;
 
 <h1>Orders</h1>
 

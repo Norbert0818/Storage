@@ -1,4 +1,7 @@
 ﻿using CoreBuisness;
+using CoreBuisness.User;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -12,9 +15,9 @@ using System.Threading.Tasks;
 
 namespace Plugins.DataStore.MySQL
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser>
     {
-        public DataContext(DbContextOptions options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
 
@@ -25,8 +28,13 @@ namespace Plugins.DataStore.MySQL
         public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
         public DbSet<WorkerTask> WorkerTasks { get; set; }
 
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Worker> Workers { get; set; }
+        ///public DbSet<AppUser> Customers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ShoppingCartProduct>()
                 .HasKey(sp => new { sp.ShoppingCartId, sp.ProductId });

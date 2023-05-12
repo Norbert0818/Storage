@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StorageSystem.Data;
 
-public class AccountContext : IdentityDbContext<IdentityUser>
+public class AccountContext : IdentityDbContext<AppUser>
 {
     public AccountContext(DbContextOptions<AccountContext> options)
         : base(options)
@@ -13,7 +13,7 @@ public class AccountContext : IdentityDbContext<IdentityUser>
     }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Worker> Workers { get; set; }
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<AppUser> Customers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

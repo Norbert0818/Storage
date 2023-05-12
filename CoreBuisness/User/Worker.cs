@@ -13,7 +13,7 @@ namespace CoreBuisness.User
         Manager,
         Admin
     }
-    public class Worker : IdentityUser
+    public class Worker : AppUser
     {
         public UserRole Role { get; set; }
     }

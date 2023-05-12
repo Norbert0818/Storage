@@ -12,6 +12,9 @@ using StorageSystem.Data;
 using UseCases.CartUseCase;
 using UseCases.OrderUseCase;
 using StorageSystem.Services;
+using CoreBuisness.User;
+using CoreBuisness;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AccountsConnection") ?? throw new InvalidOperationException("Connection string 'DatabaseContextConnection' not found.");
@@ -22,17 +25,17 @@ builder.Services.AddServerSideBlazor();
 
 
 
-builder.Services.AddDbContext<AccountContext>(options =>
-  options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
+//builder.Services.AddDbContext<AccountContext>(options =>
+//  options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
 builder.Services.AddDbContext<DataContext>(options =>
   options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
 
 
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<AccountContext>();
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<DataContext>();
+//builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<AccountContext>()
 //    .AddRoleManager<RoleManager<IdentityRole>>();
 
@@ -56,6 +59,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<ClientInfo>();
 
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
 builder.Services.AddTransient<IAddCategoryUseCase, AddCategoryUseCase>();
@@ -72,6 +76,11 @@ builder.Services.AddTransient<IAddProductToCartUseCase, AddProductToCartUseCase>
 builder.Services.AddTransient<IGetCartUseCase, GetCartUseCase>();
 builder.Services.AddTransient<IGetCartProductsUseCase, GetCartProductsUseCase>();
 builder.Services.AddTransient<IDeleteOrderUseCase, DeleteOrderUseCase>();
+
+
+builder.Services.AddSingleton<EmailService>();
+
+
 
 var app = builder.Build();
 

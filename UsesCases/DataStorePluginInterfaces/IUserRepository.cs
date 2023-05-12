@@ -1,4 +1,5 @@
 ﻿using CoreBuisness;
+using CoreBuisness.User;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace UseCases.DataStorePluginInterfaces
 {
     public interface IUserRepository
     {
-        IEnumerable<IdentityUser> GetUsers();
-        // void AddUser(IdentityUser user);
-        // void UpdateUser(IdentityUser user);
+        IEnumerable<AppUser> GetUsers();
+        // void AddUser(AppUser user);
+        // void UpdateUser(AppUser user);
         // Product GetUserById(int userId);
         // void DeleteUser(int userId);
     }

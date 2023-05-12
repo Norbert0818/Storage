@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CoreBuisness.User
 {
-    public class Customer : IdentityUser
+    public class AppUser : IdentityUser
     {
-        public Address Address { get; set; }
-
+        //public Address Address { get; set; }
+        public List<ShoppingCart> ShoppingCarts { get; set; } = new();
     }
 }

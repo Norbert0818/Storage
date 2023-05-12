@@ -3,11 +3,13 @@
 @inject IViewProductsUseCase ViewProductsUseCase
 @inject IAddProductToCartUseCase AddProductToCartUseCase
 @inject IGetCartUseCase GetCartUseCase
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<AppUser> UserManager
 @inject AuthenticationStateProvider AuthStateProvider
 @inject DataContext dbContext
+@inject ClientInfo clientInfo
 @using Microsoft.AspNetCore.Identity
 @using Plugins.DataStore.MySQL
+@using CoreBuisness.User;
 
 <h3>Products</h3>
 
@@ -17,13 +19,14 @@
         @foreach (var product in products)
         {
             <div class="card" style="width: 18rem;">
-                <img src="@product.ImageLink" class="card-img-top" alt="product image">
+                <img src="@product.ImageLink" class="card-img-top" alt="product image" style="height:286px;width:286px;">
                 <div class="card-body">
                     <h5 class="card-title">@product.Name</h5>
                     <p class="card-text">@product.Description</p>
                     <div class="d-flex align-baseline">
                         <p class="card-text w-50 font-weight-bold">@product.Price $</p>
-                        <button type="button" @onclick="EventCallback.Factory.Create(this, () => OnClickAddProduct(product))" class="btn btn-primary">Add to cart</button>
+                            <button type="button" @onclick="EventCallback.Factory.Create(this, () => OnClickAddProduct(product))" class="btn btn-primary">Add to cart</button>
+                        
                     </div>
                 </div>
             </div>
@@ -35,7 +38,7 @@
     private IEnumerable<Product> products;
     private ShoppingCart cart;
 
-    // private UserManager<IdentityUser> _userManager;
+    // private UserManager<AppUser> _userManager;
 
     private bool isLoggedIn;
 
@@ -51,12 +54,12 @@
         }
         else
         {
-            cart = GetCartUseCase.Execute(null);
+            cart = GetCartUseCase.Execute(null, clientInfo.ClientId.ToString());
         }
 
         products = ViewProductsUseCase.Execute();
     }
-   
+
     private async Task OnClickAddProduct(Product product)
     {
         if (cart == null)
@@ -72,11 +75,18 @@
                 dbContext.ShoppingCarts.Add(cart);
                 await dbContext.SaveChangesAsync();
             }
+            else
+            {
+                cart = new ShoppingCart { AnonId = clientInfo.ClientId.ToString() };
+
+                dbContext.ShoppingCarts.Add(cart);
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         await Task.Run(() => AddProductToCartUseCase.Execute(cart, product));
     }
 
-
+    
 
 }

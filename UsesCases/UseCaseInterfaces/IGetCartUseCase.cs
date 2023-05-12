@@ -5,6 +5,6 @@ namespace UseCases.UseCaseInterfaces
 {
     public interface IGetCartUseCase
     {
-        ShoppingCart Execute(string userId);
+        ShoppingCart Execute(string? userId, string? anonId = null);
     }
 }
