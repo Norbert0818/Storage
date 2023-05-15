@@ -42,11 +42,11 @@ namespace Plugins.DataStore.MySQL
         }
         public async Task<int> UpdateOrderAsync(Order order)
         {
-            order.CustomerId = order.ShoppingCart.UserId ?? order.ShoppingCart.AnonId; // TODO: remove this line
+            order.CustomerId = order.ShoppingCart.UserId ?? order.ShoppingCart.AnonId;
             foreach (ShoppingCartProduct shoppingCartProduct in order.ShoppingCart!.ShoppingCartProducts)
             {
                 Product product = _dbContext.Products.FirstOrDefault(p => p.Id == shoppingCartProduct.ProductId)!;
-                //product.Quantity -= shoppingCartProduct.Quantity;
+                product.Quantity -= shoppingCartProduct.Quantity;
             }
             _dbContext.Orders.Update(order);
             return await _dbContext.SaveChangesAsync();

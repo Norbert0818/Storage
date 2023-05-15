@@ -223,7 +223,7 @@ else
             @foreach (var shoppingCartProducts in cart.ShoppingCartProducts)
             {
                 total += shoppingCartProducts.Product.Price * shoppingCartProducts.Quantity;
-                quantitySzam -= shoppingCartProducts.Quantity;
+                quantitySzam += shoppingCartProducts.Quantity;
             }
         }
         catch {}

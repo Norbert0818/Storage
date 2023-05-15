@@ -117,7 +117,7 @@ else
                 if (matchingProduct != null)
                 {
                     productQuantities.Add(matchingProduct, product.Quantity);
-                    matchingProduct.Quantity -= product.Quantity;
+                    //matchingProduct.Quantity -= product.Quantity;
                     dbContext.SaveChanges();
                 }
             }
