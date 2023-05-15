@@ -11,7 +11,7 @@ using Plugins.DataStore.MySQL;
 namespace Plugins.DataStore.MySQL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230510163545_newmigration")]
+    [Migration("20230515155640_newmigration")]
     partial class newmigration
     {
         /// <inheritdoc />
@@ -55,6 +55,9 @@ namespace Plugins.DataStore.MySQL.Migrations
 
                     b.Property<string>("CustomerEmail")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CustomerId")
                         .HasColumnType("longtext");
 
                     b.Property<string>("CustomerName")

@@ -49,7 +49,9 @@
                             @shoppingCartProducts.Product.Price $
                         </td>
                         <td>
-                            <input type="number" min="1" @bind="@shoppingCartProducts.Quantity" @oninput="async (e) => await UpdateQuantity(shoppingCartProducts)" />
+                            @*<input type="number" min="1" @bind="@shoppingCartProducts.Quantity" @oninput="async (e) => await UpdateQuantity(shoppingCartProducts)" />*@
+                    <input type="number" min="1" @bind="@shoppingCartProducts.Quantity" @oninput="(e) => OnQuantityChanged(e, shoppingCartProducts)" />
+
                         </td>
                         <td>
                             <button type="button" class="btn btn-link" @onclick="() => RemoveProductFromCart(shoppingCartProducts.Product)">Remove From Cart</button>
@@ -221,7 +223,7 @@ else
             @foreach (var shoppingCartProducts in cart.ShoppingCartProducts)
             {
                 total += shoppingCartProducts.Product.Price * shoppingCartProducts.Quantity;
-                quantitySzam += shoppingCartProducts.Quantity;
+                quantitySzam -= shoppingCartProducts.Quantity;
             }
         }
         catch {}
@@ -253,6 +255,20 @@ else
         else
         {
             Console.WriteLine("Failed to create order.");
+        }
+    }
+
+    private async Task OnQuantityChanged(ChangeEventArgs e, ShoppingCartProduct shoppingCartProduct)
+    {
+        if (!string.IsNullOrEmpty(e.Value.ToString()))
+        {
+            shoppingCartProduct.Quantity = Convert.ToInt32(e.Value);
+            await UpdateQuantity(shoppingCartProduct);
+        }
+        else
+        {
+            shoppingCartProduct.Quantity = 1;
+            await UpdateQuantity(shoppingCartProduct);
         }
     }
 

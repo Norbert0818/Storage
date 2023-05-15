@@ -14,7 +14,8 @@ namespace CoreBuisness
     {
         [Key]
         public int Id { get; set; }
-        public string CustomerId => ShoppingCart?.UserId ?? string.Empty;
+        //public string CustomerId => ShoppingCart?.UserId ?? string.Empty;
+        public string? CustomerId { get; set; }
         [Required(ErrorMessage = "Name is required")]
         public string CustomerName { get; set; } = null!;
         public string CustomerEmail { get; set; } = null!;

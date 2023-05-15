@@ -54,6 +54,9 @@ namespace Plugins.DataStore.MySQL.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasColumnType("longtext");
