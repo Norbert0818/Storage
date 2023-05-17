@@ -1,5 +1,5 @@
 ﻿@page "/editingproducts"
-@attribute [Authorize(Roles = "Admin, Manager")]
+@attribute [Authorize(Roles = "Admin, Manager, Employee")]
 
 
 @inject NavigationManager NavigationManager
@@ -33,18 +33,24 @@
                     <td>@product.Quantity</td>
                     <td>@product.MaxQuantity</td>
                     <td>@product.ImageLink</td>
-                    <td>
-                        <button type="button" class="btn btn-link" @onclick="@(()=>OnEditProduct(product))">Edit</button>
+                    <AuthorizeView Roles="Manager, Admin">
+                        <td>
+                            <button type="button" class="btn btn-link" @onclick="@(()=>OnEditProduct(product))">Edit</button>
 
-                        <button type="button" class="btn btn-link" @onclick="@(()=>OnDeleteProduct(product.Id))">Delete</button>
-                    </td>
+                            <button type="button" class="btn btn-link" @onclick="@(()=>OnDeleteProduct(product.Id))">Delete</button>
+                        </td>
+                    </AuthorizeView>
+                    
                 </tr>
             }
         </tbody>
     </table>
 }
 <br />
-<button type="button" @onclick="OnClickAddProduct" class="btn btn-primary">Add Product</button>
+<AuthorizeView Roles="Manager, Admin">
+    <button type="button" @onclick="OnClickAddProduct" class="btn btn-primary">Add Product</button>
+</AuthorizeView>
+
 
 
 @code {

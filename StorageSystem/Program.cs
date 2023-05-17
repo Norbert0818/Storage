@@ -23,22 +23,13 @@ var connectionString = builder.Configuration.GetConnectionString("AccountsConnec
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-
-
-//builder.Services.AddDbContext<AccountContext>(options =>
-//  options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
 builder.Services.AddDbContext<DataContext>(options =>
   options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
-
 
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DataContext>();
-//builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<AccountContext>()
-//    .AddRoleManager<RoleManager<IdentityRole>>();
-
 
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -88,7 +79,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
