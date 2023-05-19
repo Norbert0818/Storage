@@ -21,8 +21,6 @@ namespace CoreBuisness
         {
             return !ShoppingCartProducts.Any();
         }
-
-        //public readonly static string ClientId = Guid.NewGuid().ToString();
     }
 
 

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CoreBuisness.Category">
+    <Position X="15.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreBuisness.Product">
+    <Position X="17.75" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQAgAgAAAAAAAAQAAAAACAAAAAACgAAACgA=</HashCode>
+      <FileName>Product.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Category" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CoreBuisness.ShoppingCart">
+    <Position X="23.5" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAFDAAAAAAAAEAAAAAAAAAgAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ShoppingCart.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Order" />
+      <Property Name="User" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CoreBuisness.ShoppingCartProduct">
+    <Position X="20.75" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAAAAAAAEAAAAAAAAgAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>ShoppingCartProduct.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Product" />
+      <Property Name="ShoppingCart" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CoreBuisness.WorkerTask">
+    <Position X="29.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAECAAAAAAAgAAAAAAAAAAAAAAAAABAAAAAAAgBAAAA=</HashCode>
+      <FileName>WorkerTask.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Order" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CoreBuisness.Order">
+    <Position X="26.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEGoAAEJAAAAAAAEAIAAAAAwgEARBACAgAAAgQAAAA=</HashCode>
+      <FileName>Order.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShoppingCart" />
+      <Property Name="Status" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CoreBuisness.ClientInfo">
+    <Position X="15.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClientInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreBuisness.User.Worker">
+    <Position X="20.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>User\Worker.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Role" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CoreBuisness.User.AppUser">
+    <Position X="20.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>User\AppUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="CoreBuisness.OrderStatusEnum">
+    <Position X="29.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAgIAAAAAA=</HashCode>
+      <FileName>OrderStatusEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CoreBuisness.User.UserRole">
+    <Position X="17.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAACAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>User\Worker.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
