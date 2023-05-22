@@ -18,11 +18,6 @@ namespace Plugins.DataStore.MySQL
             _dbContext = dbContext;
         }
 
-        //public async Task<int> AddOrderAsync(Order order)
-        //{
-        //    _dbContext.Orders.Add(order);
-        //    return await _dbContext.SaveChangesAsync();
-        //}
         public async Task<int> AddOrderAsync(Order order)
         {
             order.CustomerId = order.ShoppingCart.UserId ?? order.ShoppingCart.AnonId;

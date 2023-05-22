@@ -51,16 +51,9 @@ public class ShoppingCartRepository : IShoppingCartRepository
         db.SaveChanges();
     }
 
+    // doksiba
     public ShoppingCart GetShoppingCartForUser(string? userId, string? anonId = null)
     {
-
-        //ShoppingCart pendingCart = db.ShoppingCarts
-        //    .Where(sc => sc.UserId == userId && sc.Order.Status == OrderStatusEnum.Pending)
-        //    .Include(sc => sc.ShoppingCartProducts)
-        //        .ThenInclude(scp => scp.Product)
-        //    .FirstOrDefault()!;
-
-
 
         ShoppingCart? shoppingCart2 = db.ShoppingCarts
             .Where(sc => sc.UserId == userId || sc.AnonId == anonId)
