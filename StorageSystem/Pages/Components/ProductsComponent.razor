@@ -77,5 +77,7 @@
     private void OnDeleteProduct(int productId)
     {
         DeleteProductUseCase.Execute(productId);
+        products = products.Where(p => p.Id != productId);
+        StateHasChanged();
     }
 }

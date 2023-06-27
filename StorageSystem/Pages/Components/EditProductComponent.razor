@@ -86,6 +86,7 @@
                     Name = prod.Name,
                     CategoryId = prod.CategoryId,
                     Price = prod.Price,
+                    Quantity = prod.Quantity,
                     MaxQuantity = prod.MaxQuantity,
                     ImageLink = prod.ImageLink,
                     Description = prod.Description
@@ -97,7 +98,6 @@
     {
         var currentMaxCapacity = dbContext.Products.Where(p => p.Id == product.Id).Select(p => p.MaxQuantity).FirstOrDefault();
         product.Quantity = product.MaxQuantity - currentMaxCapacity;
-           
         EditProductUseCase.Execute(this.product);
         NavigationManager.NavigateTo("/editingproducts");
     }

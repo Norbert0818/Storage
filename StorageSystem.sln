@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBuisness", "CoreBuisnes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugins.DataStore.MySQL", "Plugins.DataStore.MySQL\Plugins.DataStore.MySQL.csproj", "{8551FE89-0FEC-42C3-AE9E-8B61688708B1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCases", "TestCases\TestCases.csproj", "{A278C735-A273-46FC-AC6C-12D883E652BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainApp.Tests", "MainApp.Tests\MainApp.Tests.csproj", "{8C24B467-A54B-4FD8-859F-CAE02A9EDE00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{8551FE89-0FEC-42C3-AE9E-8B61688708B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8551FE89-0FEC-42C3-AE9E-8B61688708B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8551FE89-0FEC-42C3-AE9E-8B61688708B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A278C735-A273-46FC-AC6C-12D883E652BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A278C735-A273-46FC-AC6C-12D883E652BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A278C735-A273-46FC-AC6C-12D883E652BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A278C735-A273-46FC-AC6C-12D883E652BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C24B467-A54B-4FD8-859F-CAE02A9EDE00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C24B467-A54B-4FD8-859F-CAE02A9EDE00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C24B467-A54B-4FD8-859F-CAE02A9EDE00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C24B467-A54B-4FD8-859F-CAE02A9EDE00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

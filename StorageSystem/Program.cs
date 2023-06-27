@@ -19,12 +19,14 @@ using System.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AccountsConnection") ?? throw new InvalidOperationException("Connection string 'DatabaseContextConnection' not found.");
 
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<DataContext>(options =>
   options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 32))));
+
 
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -39,7 +41,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 5;
+    options.Password.RequiredLength = 4;
     options.Password.RequiredUniqueChars = 0;
 });
 

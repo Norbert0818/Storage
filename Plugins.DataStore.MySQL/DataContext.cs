@@ -17,19 +17,20 @@ namespace Plugins.DataStore.MySQL
 {
     public class DataContext : IdentityDbContext<AppUser>
     {
+        public DataContext() { }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
 
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-        public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
-        public DbSet<WorkerTask> WorkerTasks { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public virtual DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
+        public virtual DbSet<WorkerTask> WorkerTasks { get; set; }
 
-        public DbSet<Address> Addresses { get; set; }
-        public DbSet<Worker> Workers { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Worker> Workers { get; set; }
         ///public DbSet<AppUser> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

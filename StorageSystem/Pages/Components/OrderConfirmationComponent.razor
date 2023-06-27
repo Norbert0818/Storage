@@ -75,7 +75,7 @@
         await OrderRepository.UpdateOrderAsync(order);
 
         //Send email to admin
-        string toEmail = "solyomnorbert18@gmail.com";
+        string toEmail = "solyomnorbert15@gmail.com";
         string subject = "New Order Received";
         string message = $"A new order has been received. Order Number: {OrderNumber}, Customer Name: {order.CustomerName}, Customer Phone Number: {order.CustomerPhoneNumber}.";
         await EmailService.SendEmailAsync(toEmail, subject, message);

@@ -10,7 +10,11 @@
 
 <h1>Orders</h1>
 
-@if (orders == null)
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+else if (orders == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -53,13 +57,38 @@ else
 
 @code {
     private List<Order> orders;
+    string errorMessage = null;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+    //    var user = authState.User;
+    //    var loggedUser = await UserManager.GetUserAsync(user);
+    //    orders = await OrderRepository.GetOrdersByCustomerIdAsync(loggedUser.Id);
+    //}
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-        var loggedUser = await UserManager.GetUserAsync(user);
-        orders = await OrderRepository.GetOrdersByCustomerIdAsync(loggedUser.Id);
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var loggedUser = await UserManager.GetUserAsync(user);
+
+            if (loggedUser != null)
+            {
+                orders = await OrderRepository.GetOrdersByCustomerIdAsync(loggedUser.Id);
+            }
+            else
+            {
+                errorMessage = "Please Register!";
+            }
+        }
+        else
+        {
+            errorMessage = "Please Register!";
+        }
     }
 
     private async Task CancelOrder(int orderNumber)

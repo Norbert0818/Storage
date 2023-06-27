@@ -1,5 +1,4 @@
 ﻿@page "/admin/orders"
-@inject DataContext dbContext
 @using Plugins.DataStore.MySQL
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Identity
@@ -101,8 +100,9 @@ else
         var usersInRole = await UserManager.GetUsersInRoleAsync("Employee");
         return usersInRole;
     }
-
-    private async Task UpdateOrderStatus(Order order, OrderStatusEnum status)
+    
+    //write public for testing
+    public async Task UpdateOrderStatus(Order order, OrderStatusEnum status)
     {
         if(status == OrderStatusEnum.Confirmed)
         {
@@ -128,8 +128,9 @@ else
         dbContext.Orders.Update(order);
         await dbContext.SaveChangesAsync();
     }
-   
-    private async Task AssignOrderToEmployeeAsync(Order order, string userId)
+
+    //write public for testing
+    public async Task AssignOrderToEmployeeAsync(Order order, string userId)
     {
         if (!string.IsNullOrEmpty(userId))
         {
